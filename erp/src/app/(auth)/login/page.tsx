@@ -9,9 +9,9 @@ export default function LoginPage() {
         </p>
         <h1 className="mt-2 text-center text-2xl font-bold text-zinc-900">Entrar</h1>
         <p className="mt-1 text-center text-sm text-zinc-500">
-          Acesso administrativo e do aluno (auth a implementar)
+          Autenticação real ainda será integrada (ex.: NextAuth / provedor OAuth).
         </p>
-        <form className="mt-8 space-y-4" action="#" method="post">
+        <div className="mt-8 space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-zinc-700">
               E-mail
@@ -41,16 +41,15 @@ export default function LoginPage() {
             href="/dashboard"
             className="block w-full rounded-full bg-brand py-3 text-center text-sm font-semibold text-white transition hover:bg-brand-dark"
           >
-            Entrar (demo)
+            Entrar (demonstração)
           </Link>
-        </form>
+        </div>
+        <p className="mt-6 text-center text-sm">
+          <Link href="/" className="text-brand underline underline-offset-2 hover:text-brand-dark">
+            ← Voltar à página inicial
+          </Link>
+        </p>
       </div>
-      <p className="mt-6 text-center text-xs text-zinc-400">
-        Domínio de produção:{" "}
-        <a href="https://www.redacaonotamil.shop" className="text-brand underline">
-          redacaonotamil.shop
-        </a>
-      </p>
     </div>
   );
 }

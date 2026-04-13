@@ -1,32 +1,56 @@
 # sistema-redas
 
-Site estático do projeto REDAS.
+Repositório com **landing** (guia da ficha) e **ERP** (Next.js em `erp/`): mesma origem no deploy correto.
 
-- **Repositório:** [github.com/joaodiasft/sistema-redas](https://github.com/joaodiasft/sistema-redas)
-- **Hospedagem:** [Vercel — sistema-redas](https://vercel.com/naredacaonota1000-2663s-projects/sistema-redas)
+| Parte | Onde está | Em produção (quando Root = `erp`) |
+|--------|-----------|-------------------------------------|
+| Landing | `index.html` (raiz) e cópia em `erp/public/index.html` | URL `/` |
+| Login ERP | `erp/src/app/(auth)/login` | `/login` |
+| Painel e módulos | `erp/src/app/(dashboard)/dashboard/...` | `/dashboard`, `/dashboard/alunos`, … |
 
-## Desenvolvimento
+## Mapa de rotas (ERP)
 
-- **Só a landing (HTML):** abra `index.html` na raiz no navegador.
-- **Landing + ERP (igual produção):** rode o app em `erp/` — a home `/` é a mesma landing (`erp/public/index.html`) e `/login` é o ERP. Ao alterar textos da landing para deploy, atualize **`erp/public/index.html`** (ou copie de `index.html` na raiz).
+Todas as URLs abaixo são relativas ao domínio (ex.: `https://www.seudominio.shop`).
 
-## Deploy na Vercel (evitar 404 NOT_FOUND)
+| Rota | Descrição |
+|------|-----------|
+| `/` | Landing estática (`public/index.html`), via middleware |
+| `/login` | Tela de entrada (demo: link “Entrar” vai ao painel) |
+| `/dashboard` | Painel resumo |
+| `/dashboard/alunos` | Módulo alunos (placeholder) |
+| `/dashboard/turmas` | Turmas |
+| `/dashboard/semestre-modulos` | Semestre e módulos |
+| `/dashboard/frequencia` | Frequência |
+| `/dashboard/materiais` | Materiais |
+| `/dashboard/financeiro` | Financeiro |
+| `/dashboard/relatorios` | Relatórios |
+| `/dashboard/usuarios` | Usuários e perfis |
+| `/dashboard/configuracoes` | Configurações |
+| *(qualquer outra)* | Página 404 com links para `/` e `/login` |
 
-O erro **404: NOT_FOUND** no domínio costuma ser porque o projeto está fazendo build da **raiz do repositório** (só HTML) e **não existe rota `/login`**.
+**Navegação interna:** menu lateral (`erp-sidebar`) aponta para as rotas acima; **Site público** → `/`; **Sair** → `/login`.
 
-1. No projeto na Vercel: **Settings → General → Root Directory** → defina **`erp`** e salve.
-2. **Settings → Environment Variables:** adicione `DATABASE_URL` com PostgreSQL (Neon, Supabase, etc.). SQLite não funciona em serverless.
-3. Faça **Redeploy** do último commit.
+**Landing:** âncoras `#introducao`, `#conteudo`, etc.; botão **Acessar sistema** → `/login` (mesmo host).
 
-O domínio **www.redacaonotamil.shop** deve estar ligado a **esse** projeto (o que usa a pasta `erp`).
+## Vercel — obrigatório para `/` e `/login` funcionarem
 
-## Domínio do sistema (ERP)
+Os logs de build em **38 ms** e ausência de `next build` indicam deploy **somente estático na raiz do repo**. Ajuste:
 
-- **Produção:** [www.redacaonotamil.shop](https://www.redacaonotamil.shop) — o botão **Acessar sistema** usa **`/login`** no mesmo domínio (funciona quando o deploy é o Next em `erp/`).
+1. Abra o projeto **sistema-redas** no painel: [Visão geral do projeto](https://vercel.com/naredacaonota1000-2663s-projects/sistema-redas).
+2. **Settings → General → Root Directory** → informe **`erp`** (sem barra) e salve.
+3. **Settings → Build & Deployment:** Framework **Next.js** (ou deixe em detecção automática após o passo 2).
+4. **Settings → Environment Variables:** crie **`DATABASE_URL`** com URL **PostgreSQL** (Neon, Supabase, etc.). Não use SQLite em produção na Vercel.
+5. **Deployments →** nos três pontos do último deploy → **Redeploy** (marque “Use existing Build Cache” só se quiser forçar rebuild limpo desmarcando).
 
-## Pasta `erp/` (ERP)
+Domínios customizados ficam em **Settings → Domains** (ex.: `www.redacaonotamil.shop` e `redacaonotamil.shop`).
 
-Aplicação **Next.js 15 + Prisma** com módulos: painel, alunos, turmas, semestre/módulos, frequência, materiais, financeiro, relatórios, usuários, configurações. Ver `erp/ESTRUTURA.txt`.
+> **Privacidade:** não commite `.env`, senhas nem URLs de banco com credenciais. O arquivo `erp/.env.example` só traz um exemplo sem segredos.
+
+## Repositório GitHub
+
+- Código: [github.com/joaodiasft/sistema-redas](https://github.com/joaodiasft/sistema-redas)
+
+## Desenvolvimento local (ERP)
 
 ```bash
 cd erp
@@ -36,4 +60,22 @@ npx prisma db push
 npm run dev
 ```
 
-Abra [http://localhost:3000](http://localhost:3000) — **`/`** = landing, **`/login`** = tela de entrada do ERP.
+- **http://localhost:3000/** → landing  
+- **http://localhost:3000/login** → login  
+
+Alterou a landing? Atualize **`erp/public/index.html`** (ou copie de novo `index.html` da raiz) antes do deploy.
+
+## Pasta `erp/` — detalhes
+
+Next.js 15, Prisma, Tailwind. Modelos no `prisma/schema.prisma`. Mapa de pastas em `erp/ESTRUTURA.txt`.
+
+## Capturas de tela na documentação (opcional)
+
+Para ilustrar o README no GitHub:
+
+1. Na Vercel: tela **Settings → General** com **Root Directory = `erp`** visível.
+2. No navegador: `/` com a landing e `/login` com o formulário.
+3. Salve como PNG, por exemplo em `docs/img/` no repositório, e no README use:  
+   `![Root Directory erp](docs/img/vercel-root-erp.png)`  
+
+(As imagens não são geradas automaticamente neste repositório; você pode adicioná-las quando quiser.)

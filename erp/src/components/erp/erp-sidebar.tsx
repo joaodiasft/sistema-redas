@@ -46,7 +46,13 @@ export function ErpSidebar() {
           );
         })}
       </nav>
-      <div className="border-t border-zinc-100 p-3">
+      <div className="border-t border-zinc-100 p-3 space-y-1">
+        <Link
+          href="/"
+          className="block rounded-lg px-3 py-2 text-center text-sm text-zinc-600 hover:bg-zinc-50"
+        >
+          Site público
+        </Link>
         <Link
           href="/login"
           className="block rounded-lg px-3 py-2 text-center text-sm text-zinc-500 hover:bg-zinc-50"
