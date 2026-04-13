@@ -2,6 +2,8 @@ ERP Curso de Redação — mapa de pastas
 =====================================
 
 erp/
+├── public/
+│   └── index.html          → Cópia da landing; servida em "/" (middleware reescreve / → /index.html)
 ├── prisma/
 │   └── schema.prisma       → Modelos: Usuario, Turma, Aluno, Semestre, ModuloCurso, Encontro,
 │                             PresencaEncontro, MaterialEncontro, ParcelaModulo

@@ -7,15 +7,22 @@ Site estático do projeto REDAS.
 
 ## Desenvolvimento
 
-Abra `index.html` no navegador ou sirva a pasta raiz com qualquer servidor HTTP estático.
+- **Só a landing (HTML):** abra `index.html` na raiz no navegador.
+- **Landing + ERP (igual produção):** rode o app em `erp/` — a home `/` é a mesma landing (`erp/public/index.html`) e `/login` é o ERP. Ao alterar textos da landing para deploy, atualize **`erp/public/index.html`** (ou copie de `index.html` na raiz).
 
-## Deploy
+## Deploy na Vercel (evitar 404 NOT_FOUND)
 
-Conecte o repositório GitHub ao projeto na Vercel (**Settings → Git**) para deploy automático a cada push na branch `main`.
+O erro **404: NOT_FOUND** no domínio costuma ser porque o projeto está fazendo build da **raiz do repositório** (só HTML) e **não existe rota `/login`**.
+
+1. No projeto na Vercel: **Settings → General → Root Directory** → defina **`erp`** e salve.
+2. **Settings → Environment Variables:** adicione `DATABASE_URL` com PostgreSQL (Neon, Supabase, etc.). SQLite não funciona em serverless.
+3. Faça **Redeploy** do último commit.
+
+O domínio **www.redacaonotamil.shop** deve estar ligado a **esse** projeto (o que usa a pasta `erp`).
 
 ## Domínio do sistema (ERP)
 
-- **Produção:** [www.redacaonotamil.shop](https://www.redacaonotamil.shop) — o botão **Acessar sistema** em `index.html` aponta para o **login do ERP:** `https://www.redacaonotamil.shop/login` (comentário no HTML indica onde alterar).
+- **Produção:** [www.redacaonotamil.shop](https://www.redacaonotamil.shop) — o botão **Acessar sistema** usa **`/login`** no mesmo domínio (funciona quando o deploy é o Next em `erp/`).
 
 ## Pasta `erp/` (ERP)
 
@@ -29,4 +36,4 @@ npx prisma db push
 npm run dev
 ```
 
-Abra [http://localhost:3000](http://localhost:3000) (redireciona para `/login`).
+Abra [http://localhost:3000](http://localhost:3000) — **`/`** = landing, **`/login`** = tela de entrada do ERP.
