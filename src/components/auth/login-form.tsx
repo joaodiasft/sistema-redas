@@ -2,13 +2,16 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
+import { createPortal } from "react-dom";
 import { whatsAppLink } from "@/lib/whatsapp";
 
 const MSG_RECUPERAR =
   "esqueci minha senha, preciso recuperar";
 const MSG_CRIAR_CONTA =
   "Olá! Não tenho conta e gostaria de solicitar um acesso à plataforma Redação Nota Mil.";
+const MSG_SUPORTE =
+  "Olá! Preciso de suporte na plataforma Redação Nota Mil.";
 
 export function LoginForm() {
   const router = useRouter();
@@ -17,11 +20,28 @@ export function LoginForm() {
   const idLembrar = useId();
   const [showSenha, setShowSenha] = useState(false);
   const [socialHint, setSocialHint] = useState<string | null>(null);
+  const [legalModal, setLegalModal] = useState<"termos" | "privacidade" | null>(
+    null,
+  );
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     router.push("/dashboard");
   }
+
+  useEffect(() => {
+    if (!legalModal) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setLegalModal(null);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [legalModal]);
 
   return (
     <div className="w-full max-w-[420px]">
@@ -30,8 +50,8 @@ export function LoginForm() {
           <p className="font-semibold tracking-tight text-[#d81b60]">
             Redação Nota Mil
           </p>
-          <p className="mt-1 text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-zinc-400">
-            The Academic Atelier
+          <p className="mt-1 text-sm font-medium tracking-wide text-zinc-500">
+            Escrita para o sucesso
           </p>
         </div>
         <h1 className="mt-5 text-center text-[1.65rem] font-bold leading-tight tracking-tight text-zinc-900">
@@ -39,13 +59,6 @@ export function LoginForm() {
         </h1>
         <p className="mt-2 text-center text-[0.9375rem] leading-relaxed text-zinc-500">
           Acesse sua conta para continuar sua jornada.
-        </p>
-        <p className="mt-3 text-center text-xs leading-relaxed text-zinc-400">
-          O mesmo login serve para{" "}
-          <span className="font-medium text-zinc-500">administradores</span>,{" "}
-          <span className="font-medium text-zinc-500">professores</span> e{" "}
-          <span className="font-medium text-zinc-500">alunos</span> — seu perfil
-          é definido pelo cadastro.
         </p>
 
         <form className="mt-8 space-y-5" onSubmit={onSubmit}>
@@ -194,14 +207,22 @@ export function LoginForm() {
         className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-zinc-400"
         aria-label="Links institucionais"
       >
-        <a href="#" className="transition hover:text-zinc-600">
+        <button
+          type="button"
+          onClick={() => setLegalModal("termos")}
+          className="border-0 bg-transparent p-0 font-inherit text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-zinc-400 transition hover:text-zinc-600"
+        >
           Termos
-        </a>
-        <a href="#" className="transition hover:text-zinc-600">
+        </button>
+        <button
+          type="button"
+          onClick={() => setLegalModal("privacidade")}
+          className="border-0 bg-transparent p-0 font-inherit text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-zinc-400 transition hover:text-zinc-600"
+        >
           Privacidade
-        </a>
+        </button>
         <a
-          href={whatsAppLink("Olá! Preciso de suporte com a plataforma Redação Nota Mil.")}
+          href={whatsAppLink(MSG_SUPORTE)}
           target="_blank"
           rel="noopener noreferrer"
           className="transition hover:text-zinc-600"
@@ -209,6 +230,11 @@ export function LoginForm() {
           Suporte
         </a>
       </nav>
+
+      <LegalSheetPortal
+        variant={legalModal}
+        onClose={() => setLegalModal(null)}
+      />
 
       <p className="mt-6 text-center">
         <Link
@@ -219,6 +245,187 @@ export function LoginForm() {
         </Link>
       </p>
     </div>
+  );
+}
+
+function LegalSheetPortal({
+  variant,
+  onClose,
+}: {
+  variant: "termos" | "privacidade" | null;
+  onClose: () => void;
+}) {
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
+  if (!ready || !variant || typeof document === "undefined") return null;
+  return createPortal(
+    <LegalSheet variant={variant} onClose={onClose} />,
+    document.body,
+  );
+}
+
+function LegalSheet({
+  variant,
+  onClose,
+}: {
+  variant: "termos" | "privacidade";
+  onClose: () => void;
+}) {
+  const title = variant === "termos" ? "Termos de uso" : "Privacidade";
+  const titleId = `legal-${variant}-title`;
+
+  return (
+    <div
+      className="fixed inset-0 z-[1000] flex items-end justify-center p-4 sm:items-center"
+      role="presentation"
+    >
+      <button
+        type="button"
+        className="absolute inset-0 bg-zinc-900/45 backdrop-blur-[2px] transition-opacity"
+        aria-label="Fechar"
+        onClick={onClose}
+      />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="relative flex max-h-[min(85vh,560px)] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]"
+      >
+        <div className="h-1 w-full bg-gradient-to-r from-[#e91e8c] via-[#d81b60] to-[#ad1457]" />
+        <div className="flex items-start justify-between gap-3 border-b border-zinc-100 px-5 pb-4 pt-5 sm:px-6">
+          <div>
+            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#d81b60]/90">
+              Redação Nota Mil
+            </p>
+            <h2
+              id={titleId}
+              className="mt-1 text-lg font-bold tracking-tight text-zinc-900"
+            >
+              {title}
+            </h2>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700"
+            aria-label="Fechar"
+          >
+            <CloseIcon />
+          </button>
+        </div>
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4 text-sm leading-relaxed text-zinc-600 sm:px-6 sm:py-5">
+          {variant === "termos" ? <TermosContent /> : <PrivacidadeContent />}
+        </div>
+        <div className="border-t border-zinc-100 bg-zinc-50/80 px-5 py-3 sm:px-6">
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full rounded-xl bg-zinc-900 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-800"
+          >
+            Entendi
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TermosContent() {
+  return (
+    <div className="space-y-4">
+      <p>
+        Estes termos resumem as regras de uso da plataforma{" "}
+        <strong className="font-semibold text-zinc-800">Redação Nota Mil</strong>{" "}
+        de forma clara e objetiva.
+      </p>
+      <ul className="list-disc space-y-2 pl-4 marker:text-[#d81b60]">
+        <li>
+          A plataforma oferece ambiente para estudo, prática de redação e
+          acompanhamento do curso, conforme o acesso concedido à sua conta.
+        </li>
+        <li>
+          Você se compromete a fornecer dados verdadeiros no cadastro e a
+          manter sua senha em sigilo. O uso da conta é pessoal e intransferível.
+        </li>
+        <li>
+          Materiais, textos e recursos disponibilizados destinam-se ao uso
+          educacional vinculado ao curso; a reprodução indevida pode violar
+          direitos autorais.
+        </li>
+        <li>
+          Podemos atualizar funcionalidades ou estes termos; em mudanças
+          relevantes, buscaremos informar pelos canais habituais da plataforma.
+        </li>
+        <li>
+          Dúvidas sobre estas condições podem ser esclarecidas pelo{" "}
+          <strong className="font-semibold text-zinc-800">Suporte</strong>{" "}
+          (WhatsApp).
+        </li>
+      </ul>
+      <p className="rounded-xl bg-zinc-50 px-3 py-2 text-xs text-zinc-500">
+        Texto informativo. Para contratos ou documentos oficiais, consulte a
+        equipe do curso.
+      </p>
+    </div>
+  );
+}
+
+function PrivacidadeContent() {
+  return (
+    <div className="space-y-4">
+      <p>
+        Sua privacidade importa. Abaixo, um resumo em linguagem direta sobre
+        como tratamos dados na{" "}
+        <strong className="font-semibold text-zinc-800">Redação Nota Mil</strong>
+        .
+      </p>
+      <ul className="list-disc space-y-2 pl-4 marker:text-[#d81b60]">
+        <li>
+          <strong className="font-semibold text-zinc-800">O que coletamos:</strong>{" "}
+          dados necessários para criar e manter sua conta e o curso — por
+          exemplo, nome, e-mail e informações de uso da plataforma (como progresso
+          em atividades), conforme o que for pedido no cadastro.
+        </li>
+        <li>
+          <strong className="font-semibold text-zinc-800">Para quê:</strong>{" "}
+          autenticar o acesso, enviar comunicações sobre o curso, prestar
+          suporte e melhorar a experiência na plataforma.
+        </li>
+        <li>
+          <strong className="font-semibold text-zinc-800">Compartilhamento:</strong>{" "}
+          não vendemos seus dados pessoais. Podemos envolver prestadores de
+          serviço (hospedagem, e-mail etc.) sob obrigação de confidencialidade, ou
+          divulgar dados se a lei exigir.
+        </li>
+        <li>
+          <strong className="font-semibold text-zinc-800">Segurança:</strong>{" "}
+          adotamos medidas razoáveis de proteção. Nenhum sistema é totalmente
+          livre de riscos — use senha forte e não compartilhe seu login.
+        </li>
+        <li>
+          <strong className="font-semibold text-zinc-800">Seus direitos:</strong>{" "}
+          você pode pedir esclarecimentos ou correções pelos nossos canais de{" "}
+          <strong className="font-semibold text-zinc-800">Suporte</strong>.
+        </li>
+      </ul>
+      <p className="rounded-xl border border-[#d81b60]/15 bg-gradient-to-br from-[#fff5f9] to-white px-4 py-3 text-xs text-zinc-600">
+        Este resumo visa transparência. Detalhes adicionais podem constar em
+        políticas ou contratos específicos fornecidos pelo curso.
+      </p>
+    </div>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M18 6L6 18M6 6l12 12"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
   );
 }
 
