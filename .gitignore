@@ -2,6 +2,7 @@
 .vscode/
 .env
 .env.*
+!.env.example
 
 # Ferramentas e skills locais (não fazem parte do site publicado)
 .claude/
@@ -12,3 +13,11 @@ skills-lock.json
 node_modules/
 dist/
 .vercel
+
+# App ERP (Next.js)
+erp/.next/
+erp/out/
+erp/*.tsbuildinfo
+erp/prisma/*.db
+erp/prisma/*.db-journal
+erp/.env

@@ -1,0 +1,142 @@
+// ERP Curso de Redação — espelha a lógica da ficha (Chamada / controle de frequência)
+// Troque sqlite por postgresql em produção (DATABASE_URL no .env)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum PerfilUsuario {
+  ADMIN
+  COORDENADOR
+  PROFESSOR
+  RECEPCAO
+  ALUNO
+}
+
+enum StatusParcela {
+  PENDENTE
+  PAGO
+  ATRASADO
+  ISENTO
+}
+
+model Usuario {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  nome         String
+  senhaHash    String
+  perfil       PerfilUsuario @default(ALUNO)
+  ativo        Boolean       @default(true)
+  criadoEm     DateTime      @default(now())
+  atualizadoEm DateTime      @updatedAt
+  aluno        Aluno?
+}
+
+model Turma {
+  id        String   @id @default(cuid())
+  nome      String
+  horario   String?
+  ativa     Boolean  @default(true)
+  criadoEm  DateTime @default(now())
+  alunos    Aluno[]
+}
+
+/// Cadastro alinhado ao cabeçalho da ficha (Aluno, Turma, contatos, acessos)
+model Aluno {
+  id               String   @id @default(cuid())
+  usuarioId        String?  @unique
+  usuario          Usuario? @relation(fields: [usuarioId], references: [id])
+  turmaId          String
+  turma            Turma    @relation(fields: [turmaId], references: [id])
+  nomeCompleto     String
+  emailContato     String
+  telefone         String
+  acessoSofia      String?
+  senhaSofiaRef    String? // referência / não armazenar senha em claro em produção
+  acessoCoredacao  String?
+  senhaCoredacaoRef String?
+  criadoEm         DateTime @default(now())
+  atualizadoEm     DateTime @updatedAt
+
+  presencas       PresencaEncontro[]
+  materiais       MaterialEncontro[]
+  parcelas        ParcelaModulo[]
+}
+
+model Semestre {
+  id        String         @id @default(cuid())
+  nome      String // ex: "2026.1 - I semestre"
+  ativo     Boolean        @default(true)
+  modulos   ModuloCurso[]
+}
+
+/// Módulos 2º ao 5º como na ficha impressa
+model ModuloCurso {
+  id          String     @id @default(cuid())
+  semestreId  String
+  semestre    Semestre   @relation(fields: [semestreId], references: [id])
+  numero      Int // 2..5
+  titulo      String?
+  encontros   Encontro[]
+}
+
+/// I, II, III, IV encontros por módulo
+model Encontro {
+  id           String   @id @default(cuid())
+  moduloId     String
+  modulo       ModuloCurso @relation(fields: [moduloId], references: [id])
+  ordem        Int // 1..4 → I..IV
+  rotulo       String // "I ENCONTRO" etc.
+
+  presencas    PresencaEncontro[]
+  materiais    MaterialEncontro[]
+}
+
+/// Linha da grade: Data, Chamada, Reposição, Entregou redação, Assinatura
+model PresencaEncontro {
+  id               String   @id @default(cuid())
+  alunoId          String
+  aluno            Aluno    @relation(fields: [alunoId], references: [id])
+  encontroId       String
+  encontro         Encontro @relation(fields: [encontroId], references: [id])
+  dataAula         DateTime
+  presente         Boolean  @default(false)
+  reposicao        Boolean  @default(false)
+  entregouRedacao  String? // texto livre: "1", "Não", etc.
+  assinaturaRef    String? // URL hash ou referência a assinatura digital
+
+  @@unique([alunoId, encontroId])
+}
+
+/// Cruzamento PROPOSTA / MATERIAL (AULA) / PASTA × encontro (marca "P")
+model MaterialEncontro {
+  id            String   @id @default(cuid())
+  alunoId       String
+  aluno         Aluno    @relation(fields: [alunoId], references: [id])
+  encontroId    String
+  encontro      Encontro @relation(fields: [encontroId], references: [id])
+  proposta      Boolean  @default(false)
+  materialAula  Boolean  @default(false)
+  pasta         Boolean  @default(false)
+
+  @@unique([alunoId, encontroId])
+}
+
+/// Financeiro: linhas 2º–5º módulo, STATUS + ASSINATURA
+model ParcelaModulo {
+  id             String        @id @default(cuid())
+  alunoId        String
+  aluno          Aluno         @relation(fields: [alunoId], references: [id])
+  moduloNumero   Int // 2..5
+  status         StatusParcela @default(PENDENTE)
+  comprovanteUrl String?
+  assinaturaRef  String?
+  pagoEm         DateTime?
+
+  @@unique([alunoId, moduloNumero])
+}

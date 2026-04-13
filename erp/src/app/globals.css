@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --erp-bg: #f7f5f8;
+  --erp-ink: #14121a;
+}
+
+body {
+  color: var(--erp-ink);
+  background: var(--erp-bg);
+}

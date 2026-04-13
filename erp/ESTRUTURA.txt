@@ -1,0 +1,32 @@
+ERP Curso de Redação — mapa de pastas
+=====================================
+
+erp/
+├── prisma/
+│   └── schema.prisma       → Modelos: Usuario, Turma, Aluno, Semestre, ModuloCurso, Encontro,
+│                             PresencaEncontro, MaterialEncontro, ParcelaModulo
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx      → Layout raiz
+│   │   ├── page.tsx        → Redireciona para /login
+│   │   ├── globals.css
+│   │   ├── (auth)/login/   → Tela de entrada (auth real a implementar)
+│   │   └── (dashboard)/    → Shell com sidebar
+│   │       └── dashboard/   → Rotas /dashboard, /dashboard/alunos, ...
+│   ├── components/erp/      → Sidebar, header
+│   ├── lib/prisma.ts        → Cliente singleton Prisma
+│   ├── server/
+│   │   ├── actions/         → Server Actions (CRUD) — a preencher
+│   │   └── services/        → Regras de negócio — a preencher
+│   └── types/               → Tipos TS compartilhados
+├── .env.example
+├── package.json
+└── next.config.ts
+
+Próximos passos sugeridos
+------------------------
+1. Auth (NextAuth / Clerk / Supabase Auth) + proteção de rotas (middleware).
+2. Server Actions + formulários por módulo.
+3. Trocar SQLite por PostgreSQL na Vercel/Neon e definir DATABASE_URL.
+4. Seed: semestre ativo, módulos 2–5 com 4 encontros cada.
+5. API ou RSC apenas — manter uma única fonte de verdade no Prisma.
