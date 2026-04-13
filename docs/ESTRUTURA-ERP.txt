@@ -1,0 +1,27 @@
+ERP Curso de Redação — mapa de pastas (Next.js na raiz do repositório)
+=======================================================================
+
+/
+├── prisma/
+│   └── schema.prisma
+├── public/
+│   └── index.html          → Landing servida em "/" (middleware reescreve / → /index.html)
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   ├── not-found.tsx
+│   │   ├── globals.css
+│   │   ├── middleware.ts
+│   │   ├── (auth)/login/
+│   │   └── (dashboard)/dashboard/...
+│   ├── components/erp/     → Sidebar, header (nome da pasta "erp" = UI)
+│   ├── lib/prisma.ts
+│   ├── server/actions|services/
+│   └── types/
+├── .env.example
+├── package.json
+├── next.config.ts
+├── vercel.json
+└── index.html              → Cópia opcional para abrir sem servidor Node
+
+Próximos passos: auth, Server Actions, PostgreSQL em produção, seed.

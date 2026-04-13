@@ -6,8 +6,7 @@ export default function NotFound() {
       <p className="text-sm font-semibold uppercase tracking-wider text-brand-dark">404</p>
       <h1 className="text-center text-2xl font-bold text-zinc-900">Página não encontrada</h1>
       <p className="max-w-md text-center text-sm text-zinc-600">
-        O caminho não existe neste site. Se você acabou de configurar o domínio, confira na Vercel se o{" "}
-        <strong>Root Directory</strong> do projeto está como <code className="rounded bg-zinc-200 px-1">erp</code>.
+        O caminho não existe neste site. Confira se digitou a URL corretamente.
       </p>
       <div className="flex flex-wrap justify-center gap-3">
         <Link
