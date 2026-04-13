@@ -1,1 +1,970 @@
-Hello World
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Passo a passo para preencher sua folha de controle do curso de redação — organização, clareza e novidades." />
+  <meta name="theme-color" content="#e11d74" />
+  <title>Folha de controle — Curso de Redação</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      /* Tokens semânticos (UI/UX Pro Max: superfície / texto / primário) */
+      --surface-page: #f7f5f8;
+      --surface-card: #ffffff;
+      --on-surface: #14121a;
+      --on-surface-muted: #45404f;
+      --primary: #e11d74;
+      --primary-strong: #c41062;
+      --bg: var(--surface-page);
+      --bg-card: var(--surface-card);
+      --ink: var(--on-surface);
+      --muted: var(--on-surface-muted);
+      --muted-light: #6f6879;
+      --line: rgba(20, 18, 26, 0.08);
+      --pink: var(--primary);
+      --pink-deep: var(--primary-strong);
+      --pink-soft: rgba(225, 29, 116, 0.12);
+      --pink-glow: rgba(225, 29, 116, 0.35);
+      --gray-soft: #ece9ef;
+      --radius: 1.25rem;
+      --radius-sm: 0.75rem;
+      --shadow: 0 4px 24px rgba(20, 18, 26, 0.06);
+      --shadow-hover: 0 12px 40px rgba(225, 29, 116, 0.15);
+      --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+      --font-body: "Source Serif 4", Georgia, serif;
+      --max: 72rem;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-out: cubic-bezier(0, 0, 0.2, 1);
+      --dur-micro: 220ms;
+      --dur-enter: 360ms;
+      --space-2: 0.5rem;
+      --space-3: 1rem;
+      --space-4: 1.5rem;
+      --space-6: 2rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    .skip-link {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .skip-link:focus {
+      position: fixed;
+      top: var(--space-3);
+      left: var(--space-3);
+      z-index: 10000;
+      width: auto;
+      height: auto;
+      margin: 0;
+      clip: auto;
+      white-space: normal;
+      padding: 0.75rem 1.25rem;
+      background: var(--ink);
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      box-shadow: 0 8px 32px rgba(20, 18, 26, 0.35);
+    }
+    .skip-link:focus-visible {
+      outline: 3px solid #fff;
+      outline-offset: 3px;
+    }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal, .reveal-stagger > * { transition: none !important; opacity: 1 !important; transform: none !important; }
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      touch-action: manipulation;
+    }
+
+    a:focus-visible,
+    .btn:focus-visible {
+      outline: 3px solid var(--pink-deep);
+      outline-offset: 3px;
+    }
+
+    h1, h2, h3, .display {
+      font-family: var(--font-display);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    a {
+      color: var(--pink-deep);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+    @media (hover: hover) {
+      a:hover { color: var(--pink); }
+    }
+
+    .wrap {
+      width: min(100% - 2rem, var(--max));
+      margin-inline: auto;
+    }
+
+    #conteudo:focus {
+      outline: 3px solid var(--pink-deep);
+      outline-offset: 4px;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding: clamp(3rem, 8vw, 6rem) 0 clamp(4rem, 10vw, 7rem);
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 80% 60% at 15% 20%, rgba(225, 29, 116, 0.14), transparent 55%),
+        radial-gradient(ellipse 60% 50% at 85% 10%, rgba(225, 29, 116, 0.08), transparent 50%),
+        linear-gradient(180deg, #fff 0%, var(--bg) 100%);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: clamp(2rem, 5vw, 3.5rem);
+      align-items: center;
+    }
+    @media (min-width: 900px) {
+      .hero-inner {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      background: var(--pink-soft);
+      color: var(--pink-deep);
+      font-family: var(--font-display);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4.5vw, 3.25rem);
+      margin: 0 0 1rem;
+      color: var(--ink);
+    }
+    .hero p.lead {
+      margin: 0 0 1.75rem;
+      font-size: 1.125rem;
+      color: var(--muted);
+      max-width: 36ch;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      min-height: 48px;
+      padding: 0.75rem 1.75rem;
+      border: none;
+      border-radius: 999px;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition:
+        transform var(--dur-micro) var(--ease-out),
+        box-shadow var(--dur-micro) var(--ease-out),
+        opacity var(--dur-micro) var(--ease-out);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink) 0%, var(--pink-deep) 100%);
+      color: #fff;
+      box-shadow: 0 8px 28px var(--pink-glow);
+    }
+    @media (hover: hover) {
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 36px var(--pink-glow);
+      }
+    }
+    .btn-primary:active {
+      transform: translateY(0) scale(0.98);
+      opacity: 0.95;
+    }
+    .hero-visual {
+      position: relative;
+      min-height: 220px;
+    }
+    .hero-card {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: min(100%, 340px);
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+    }
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(225, 29, 116, 0.35), transparent 50%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+    .hero-card h3 {
+      margin: 0 0 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--pink-deep);
+    }
+    .hero-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .hero-line {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--gray-soft);
+    }
+    .hero-line:nth-child(1) { width: 85%; }
+    .hero-line:nth-child(2) { width: 100%; background: var(--pink-soft); }
+    .hero-line:nth-child(3) { width: 70%; }
+    .hero-float {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+      opacity: 0.9;
+      animation: float 6s var(--ease) infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(-6deg); }
+      50% { transform: translate(8px, 12px) rotate(4deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-float { animation: none; }
+    }
+
+    /* Sections */
+    section {
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+    .section-label {
+      font-family: var(--font-display);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--pink-deep);
+      margin: 0 0 0.5rem;
+    }
+    .section-title {
+      font-size: clamp(1.65rem, 3vw, 2.25rem);
+      margin: 0 0 1rem;
+    }
+    .section-intro {
+      max-width: 62ch;
+      color: var(--muted);
+      margin: 0 0 2rem;
+    }
+
+    .intro-box {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: clamp(1.5rem, 4vw, 2.25rem);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--pink);
+    }
+    .intro-box p { margin: 0; color: var(--ink); font-size: 1.08rem; }
+
+    /* Cards grid */
+    .grid-cards {
+      display: grid;
+      gap: var(--space-3);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) {
+      .grid-cards { gap: var(--space-4); }
+    }
+    @media (min-width: 640px) {
+      .grid-cards { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .grid-cards.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: var(--space-4) var(--space-4) calc(var(--space-4) + 0.1rem);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out);
+    }
+    @media (hover: hover) {
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-hover);
+      }
+    }
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--pink-soft);
+      color: var(--pink-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .card-icon svg { width: 24px; height: 24px; }
+    .card h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+      font-family: var(--font-display);
+    }
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    /* Timeline frequência */
+    .timeline {
+      display: grid;
+      gap: 1rem;
+      position: relative;
+    }
+    @media (min-width: 768px) {
+      .timeline {
+        padding-left: 1.5rem;
+        border-left: 2px solid var(--gray-soft);
+      }
+    }
+    .timeline-item {
+      position: relative;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 1.25rem var(--space-4);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out);
+    }
+    @media (hover: hover) {
+      .timeline-item:hover {
+        transform: translateX(4px);
+        box-shadow: var(--shadow-hover);
+      }
+    }
+    @media (min-width: 768px) {
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: calc(-1.5rem - 9px);
+        top: 1.5rem;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--pink);
+        box-shadow: 0 0 0 4px var(--pink-soft);
+      }
+    }
+    .timeline-item .row {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .timeline-item h3 { margin: 0 0 0.4rem; font-size: 1.05rem; }
+    .timeline-item p { margin: 0; color: var(--muted); }
+
+    /* Alert strip */
+    .alert-strip {
+      background: linear-gradient(135deg, var(--ink) 0%, #2d2640 100%);
+      color: #fff;
+      padding: clamp(1.5rem, 4vw, 2rem);
+      border-radius: var(--radius);
+      text-align: center;
+      box-shadow: 0 16px 48px rgba(20, 18, 26, 0.2);
+    }
+    .alert-strip p {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .alert-strip span {
+      display: inline-block;
+      margin-top: var(--space-2);
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    /* Novidade — tech */
+    .novidade {
+      position: relative;
+      border-radius: calc(var(--radius) + 4px);
+      padding: clamp(2rem, 5vw, 3.5rem);
+      background:
+        radial-gradient(ellipse 100% 80% at 100% 0%, rgba(225, 29, 116, 0.2), transparent 55%),
+        radial-gradient(ellipse 80% 60% at 0% 100%, rgba(225, 29, 116, 0.12), transparent 50%),
+        linear-gradient(165deg, #fff 0%, #fdf2f7 50%, #fff 100%);
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+    .novidade::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(225, 29, 116, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(225, 29, 116, 0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      mask-image: linear-gradient(180deg, #000 40%, transparent);
+    }
+    .novidade-inner { position: relative; z-index: 1; max-width: 48rem; }
+    .novidade h2 {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      margin: 0 0 0.5rem;
+    }
+    .novidade .sub {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--pink-deep);
+      font-weight: 600;
+      margin: 0 0 1.25rem;
+    }
+    .novidade ul {
+      list-style: none;
+      padding: 0;
+      margin: 1.5rem 0;
+      display: grid;
+      gap: 0.75rem;
+    }
+    .novidade li {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      min-height: 48px;
+      padding: 0.75rem var(--space-3);
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 0.98rem;
+    }
+    .novidade li svg {
+      flex-shrink: 0;
+      color: var(--pink-deep);
+    }
+    .novidade .closing {
+      margin: 1.25rem 0 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--ink);
+      color: rgba(255, 255, 255, 0.88);
+      padding: clamp(2.5rem, 5vw, 3.5rem) 0;
+      margin-top: 2rem;
+    }
+    footer .wrap {
+      display: grid;
+      gap: 2rem;
+    }
+    @media (min-width: 768px) {
+      footer .wrap {
+        grid-template-columns: 1.2fr 1fr;
+        align-items: start;
+      }
+    }
+    footer .brand {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 0.5rem;
+    }
+    footer .tag {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 0.95rem;
+      max-width: 32ch;
+    }
+    footer dl {
+      margin: 0;
+      display: grid;
+      gap: 1rem;
+    }
+    footer dt {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: rgba(255, 255, 255, 0.58);
+      margin-bottom: 0.2rem;
+    }
+    footer dd {
+      margin: 0;
+      font-size: 1rem;
+    }
+    footer a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: #fff;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+      transition: border-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
+    }
+    footer a:focus-visible {
+      outline-color: #ffb3d4;
+      outline-offset: 4px;
+    }
+    @media (hover: hover) {
+      footer a:hover {
+        color: #ffb3d4;
+        border-color: #ffb3d4;
+      }
+    }
+    footer .bottom {
+      grid-column: 1 / -1;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+    }
+
+    /* Reveal on scroll — duração ≤400ms + stagger 40ms (UI/UX Pro Max) */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity var(--dur-enter) var(--ease-out), transform var(--dur-enter) var(--ease-out);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-stagger > * {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 280ms var(--ease-out), transform 280ms var(--ease-out);
+    }
+    .reveal-stagger.visible > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-stagger.visible > *:nth-child(1) { transition-delay: 0.04s; }
+    .reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.08s; }
+    .reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.12s; }
+    .reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.16s; }
+    .reveal-stagger.visible > *:nth-child(5) { transition-delay: 0.2s; }
+    .reveal-stagger.visible > *:nth-child(6) { transition-delay: 0.24s; }
+    .reveal-stagger.visible > *:nth-child(7) { transition-delay: 0.28s; }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <a href="#conteudo" class="skip-link">Ir para o conteúdo principal</a>
+  <header class="hero" id="top">
+    <div class="wrap hero-inner">
+      <div>
+        <div class="hero-badge reveal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Curso de redação
+        </div>
+        <h1 class="reveal">Passo a passo para preencher sua folha de controle</h1>
+        <p class="lead reveal">Organize corretamente seus dados, sua frequência, seus materiais e seu financeiro de forma simples, prática e segura.</p>
+        <a href="#introducao" class="btn btn-primary reveal">Ver orientações</a>
+      </div>
+      <div class="hero-visual reveal" aria-hidden="true">
+        <div class="hero-float"></div>
+        <div class="hero-card">
+          <h3>Folha do dia</h3>
+          <div class="hero-lines">
+            <div class="hero-line"></div>
+            <div class="hero-line"></div>
+            <div class="hero-line"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo" tabindex="-1">
+    <section id="introducao">
+      <div class="wrap">
+        <p class="section-label reveal">Comece por aqui</p>
+        <h2 class="section-title reveal">Orientações para um preenchimento sem erros</h2>
+        <div class="intro-box reveal">
+          <p>Para facilitar o preenchimento da sua folha de controle, siga as orientações abaixo com atenção. Preencha apenas as informações corretas e referentes à aula do dia.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="dados-iniciais" aria-labelledby="dados-titulo">
+      <div class="wrap">
+        <p class="section-label reveal">Primeira parte</p>
+        <h2 class="section-title reveal" id="dados-titulo">Dados iniciais</h2>
+        <p class="section-intro reveal">Informações pessoais e de acesso — confira cada campo antes de seguir para a frequência.</p>
+        <div class="grid-cards cols-3 reveal-stagger">
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <h3>Nome</h3>
+            <p>Coloque seu nome completo. Se já estiver preenchido, apenas confira se está correto.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h3>Turma</h3>
+            <p>Verifique seu horário de aula e escreva a turma correspondente ao seu horário.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <h3>E-mail</h3>
+            <p>Preencha com o e-mail que você mais usa, pois ele poderá ser importante para acessos e comunicação.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <h3>Telefone</h3>
+            <p>Coloque o número de telefone que está no grupo, para evitar erros no cadastro.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h3>Acesso Sofia</h3>
+            <p>Esse acesso está no seu WhatsApp. Não compartilhe esses dados com ninguém.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>Acesso Coredação</h3>
+            <p>Preencha com o e-mail usado no Coredação. Confira com atenção para não errar.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="frequencia" aria-labelledby="freq-titulo">
+      <div class="wrap">
+        <p class="section-label reveal">Durante as aulas</p>
+        <h2 class="section-title reveal" id="freq-titulo">Controle de frequência</h2>
+        <p class="section-intro reveal">Cada coluna tem uma função — use apenas a linha do dia da sua aula.</p>
+        <div class="timeline reveal-stagger">
+          <article class="timeline-item">
+            <div class="row">
+              <div class="card-icon" style="margin-bottom:0; flex-shrink:0;" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div>
+                <h3>Data</h3>
+                <p>Na coluna “Data”, coloque a data da aula do dia.</p>
+              </div>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <div class="row">
+              <div class="card-icon" style="margin-bottom:0; flex-shrink:0;" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div>
+                <h3>Chamada</h3>
+                <p>Na coluna “Chamada”, escreva “Presente” quando você estiver na aula.</p>
+              </div>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <div class="row">
+              <div class="card-icon" style="margin-bottom:0; flex-shrink:0;" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div>
+                <h3>Reposição</h3>
+                <p>A coluna “Reposição” só deve ser preenchida se você tiver faltado e estiver fazendo aula de reposição. Se você estiver na aula normal do dia, deixe essa parte em branco.</p>
+              </div>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <div class="row">
+              <div class="card-icon" style="margin-bottom:0; flex-shrink:0;" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <div>
+                <h3>Entregou redação</h3>
+                <p>Escreva quantas redações você vai entregar na recepção. Se não for entregar redação naquele dia, pode escrever “Não”.</p>
+              </div>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <div class="row">
+              <div class="card-icon" style="margin-bottom:0; flex-shrink:0;" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17h18M3 12h18M3 7h18"/></svg>
+              </div>
+              <div>
+                <h3>Assinatura</h3>
+                <p>Depois de preencher sua linha corretamente, assine no local indicado. Antes de assinar, confira se todas as informações estão certas.</p>
+              </div>
+            </div>
+          </article>
+          <article class="timeline-item" style="border-color: rgba(225,29,116,0.25); background: linear-gradient(135deg, #fff 0%, #fff5f9 100%);">
+            <div class="row">
+              <div class="card-icon" style="margin-bottom:0; flex-shrink:0; background: rgba(225,29,116,0.18);" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+              <div>
+                <h3>Atenção importante</h3>
+                <p>Preencha somente a linha referente à aula do dia. Não escreva nas linhas das próximas aulas.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="material" aria-labelledby="mat-titulo">
+      <div class="wrap">
+        <p class="section-label reveal">Materiais</p>
+        <h2 class="section-title reveal" id="mat-titulo">Controle de material</h2>
+        <p class="section-intro reveal">Use a letra “P” quando pegar o item correspondente.</p>
+        <div class="grid-cards reveal-stagger">
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <h3>Proposta do dia</h3>
+            <p>Se você pegou a proposta do dia, escreva a letra “P”.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <h3>Material do dia</h3>
+            <p>Se você pegou o material da aula, escreva a letra “P”.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3>Pasta</h3>
+            <p>Se você recebeu a pasta na primeira aula, marque que pegou.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="financeiro" aria-labelledby="fin-titulo">
+      <div class="wrap">
+        <p class="section-label reveal">Pagamentos</p>
+        <h2 class="section-title reveal" id="fin-titulo">Financeiro</h2>
+        <p class="section-intro reveal">Mantenha o status e as assinaturas alinhados ao que foi pago e enviado.</p>
+        <div class="grid-cards reveal-stagger">
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <h3>Status do pagamento</h3>
+            <p>Se você já pagou, escreva “Pago” no status.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <h3>Comprovante</h3>
+            <p>Confira se o comprovante foi realmente enviado.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17h18M3 12h18M3 7h18"/></svg>
+            </div>
+            <h3>Assinatura no financeiro</h3>
+            <p>Depois de confirmar que pagou, assine no local indicado.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="aviso" aria-labelledby="aviso-titulo">
+      <div class="wrap">
+        <h2 class="visually-hidden" id="aviso-titulo">Aviso importante</h2>
+        <div class="alert-strip reveal">
+          <p>Preencha com atenção e confira tudo antes de assinar.</p>
+          <span>Cada detalhe conta para manter seu cadastro e sua frequência corretos.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="novidade" aria-labelledby="nov-titulo">
+      <div class="wrap">
+        <div class="novidade reveal">
+          <div class="novidade-inner">
+            <p class="section-label" style="margin-bottom:0.35rem;">Novidade</p>
+            <h2 id="nov-titulo">Uma novidade está chegando</h2>
+            <p class="sub">Em breve, tudo isso ficará mais fácil.</p>
+            <p>Ainda neste mês, será liberado um novo sistema para o aluno acompanhar de forma mais moderna e prática:</p>
+            <ul>
+              <li>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                seu financeiro;
+              </li>
+              <li>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                sua frequência;
+              </li>
+              <li>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                quantas redações já entregou;
+              </li>
+              <li>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                e seu desenvolvimento no curso.
+              </li>
+            </ul>
+            <p class="closing"><strong>Seu acesso será enviado em breve.</strong></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div>
+        <p class="brand">Curso de Redação</p>
+        <p class="tag">Organização, clareza e acompanhamento do seu progresso.</p>
+      </div>
+      <dl>
+        <div>
+          <dt>Contato</dt>
+          <dd><a href="#">WhatsApp do grupo / recepção</a></dd>
+        </div>
+        <div>
+          <dt>Instagram</dt>
+          <dd><a href="#" rel="noopener noreferrer">@seucurso</a></dd>
+        </div>
+        <div>
+          <dt>Professora</dt>
+          <dd>Nome da professora</dd>
+        </div>
+      </dl>
+      <p class="bottom">© <span id="y"></span> Curso de Redação. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var reveals = document.querySelectorAll(".reveal, .reveal-stagger");
+    var scrollScheduled = false;
+
+    function runRevealCheck() {
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      reveals.forEach(function (el) {
+        var rect = el.getBoundingClientRect();
+        if (rect.top < vh * 0.88) el.classList.add("visible");
+      });
+      scrollScheduled = false;
+    }
+
+    function onScroll() {
+      if (reduceMotion) return;
+      if (!scrollScheduled) {
+        scrollScheduled = true;
+        requestAnimationFrame(runRevealCheck);
+      }
+    }
+
+    if (!reduceMotion) {
+      window.addEventListener("scroll", onScroll, { passive: true });
+      document.addEventListener("DOMContentLoaded", runRevealCheck);
+      window.addEventListener("load", runRevealCheck);
+      runRevealCheck();
+    } else {
+      reveals.forEach(function (el) { el.classList.add("visible"); });
+    }
+
+    var skip = document.querySelector(".skip-link");
+    if (skip) {
+      skip.addEventListener("click", function () {
+        requestAnimationFrame(function () {
+          var mainEl = document.getElementById("conteudo");
+          if (mainEl) mainEl.focus();
+        });
+      });
+    }
+  </script>
+</body>
+</html>
