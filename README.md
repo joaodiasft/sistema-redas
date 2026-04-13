@@ -37,7 +37,7 @@ npm run dev
 ## Deploy na Vercel
 
 1. Projeto conectado ao repositório **joaodiasft/sistema-redas** (branch `main`).
-2. **Root Directory** deve ficar **vazio** ou **`.`** (raiz) — não use `erp` (pasta removida).
+2. **Root Directory** deve ficar **vazio** (padrão, raiz do repo). Se antes estava `erp`, **apague** e salve — a pasta `erp` não existe mais e o build quebraria.
 3. Build: `npm run build` (padrão). Framework: **Next.js**.
 4. Variável **`DATABASE_URL`** (PostgreSQL) em produção — não use SQLite na Vercel.
 
