@@ -676,6 +676,133 @@
     .reveal-stagger.visible > *:nth-child(8) { transition-delay: 0.32s; }
     .reveal-stagger.visible > *:nth-child(9) { transition-delay: 0.36s; }
 
+    /* Splash ao acessar sistema (5s → /login) */
+    :root {
+      --splash-pink: #b91c4a;
+      --splash-bg: #fff5f8;
+    }
+    .splash-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      padding-bottom: 3rem;
+      background: linear-gradient(180deg, #ffffff 0%, var(--splash-bg) 55%, #fff 100%);
+      text-align: center;
+    }
+    .splash-overlay.is-visible {
+      display: flex;
+    }
+    .splash-watermark {
+      position: absolute;
+      opacity: 0.07;
+      color: var(--splash-pink);
+      pointer-events: none;
+    }
+    .splash-watermark--tl {
+      top: 8%;
+      left: 6%;
+      width: 72px;
+      height: 72px;
+    }
+    .splash-watermark--br {
+      bottom: 12%;
+      right: 8%;
+      width: 80px;
+      height: 80px;
+    }
+    .splash-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 22rem;
+    }
+    .splash-icon-wrap {
+      width: 5.5rem;
+      height: 5.5rem;
+      margin: 0 auto 1.25rem;
+      border-radius: 1.25rem;
+      background: #fff;
+      box-shadow: 0 8px 32px rgba(185, 28, 74, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--splash-pink);
+    }
+    .splash-icon-wrap svg {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+    .splash-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 5vw, 1.85rem);
+      font-weight: 700;
+      color: var(--splash-pink);
+      letter-spacing: -0.02em;
+    }
+    .splash-tag {
+      margin: 0.35rem 0 0;
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: #9ca3af;
+      text-transform: uppercase;
+    }
+    .splash-bottom {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(18rem, 85vw);
+    }
+    .splash-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.45rem;
+      margin-bottom: 1rem;
+    }
+    .splash-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--splash-pink);
+      opacity: 0.35;
+      animation: splash-dot 1.2s ease-in-out infinite;
+    }
+    .splash-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .splash-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes splash-dot {
+      0%, 80%, 100% { opacity: 0.35; transform: scale(1); }
+      40% { opacity: 1; transform: scale(1.15); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .splash-dots span { animation: none; opacity: 0.7; }
+    }
+    .splash-bar {
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(185, 28, 74, 0.12);
+      overflow: hidden;
+    }
+    .splash-bar-fill {
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: var(--splash-pink);
+      transition: width 5s linear;
+    }
+    .splash-status {
+      margin: 0.75rem 0 0;
+      font-family: var(--font-display);
+      font-size: 0.8125rem;
+      color: #9ca3af;
+    }
+
     .visually-hidden {
       position: absolute;
       width: 1px;
@@ -690,6 +817,26 @@
   </style>
 </head>
 <body>
+  <div id="splash-sistema" class="splash-overlay" role="dialog" aria-modal="true" aria-labelledby="splash-titulo" aria-busy="true" hidden>
+    <div class="splash-watermark splash-watermark--tl" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" width="72" height="72"><path d="M4 20h16M6 16l2-8 4 4 4-8 4 12"/><path d="M8 4l2 2-2 6"/></svg>
+    </div>
+    <div class="splash-watermark splash-watermark--br" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" width="80" height="80"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+    </div>
+    <div class="splash-inner">
+      <div class="splash-icon-wrap" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><path d="M17.5 8.5l-6.3 6.3a1 1 0 0 0 0 1.4l1.4 1.4a1 1 0 0 0 1.4 0l6.3-6.3"/></svg>
+      </div>
+      <h2 id="splash-titulo" class="splash-title">Redação Nota Mil</h2>
+      <p class="splash-tag">The Academic Atelier</p>
+    </div>
+    <div class="splash-bottom">
+      <div class="splash-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="splash-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="splash-progress"><div class="splash-bar-fill" id="splash-bar-fill"></div></div>
+      <p class="splash-status">Preparando seu ambiente de escrita…</p>
+    </div>
+  </div>
   <a href="#conteudo" class="skip-link">Ir para o conteúdo principal</a>
   <header class="hero" id="top">
     <div class="wrap hero-inner">
@@ -702,7 +849,7 @@
         <p class="lead reveal">Este guia segue a <strong>Chamada 1</strong> — o <strong>Controle de frequência</strong> do curso. Cada campo tem um “endereço” na folha: achou a linha certa, preencheu certo.</p>
         <!-- Mesmo domínio: /login é a rota Next.js do ERP -->
         <div class="hero-actions reveal">
-          <a href="/login" class="btn btn-primary">Acessar sistema</a>
+          <a href="/login" class="btn btn-primary" id="acessar-sistema">Acessar sistema</a>
           <a href="#introducao" class="btn btn-secondary">Ver orientações</a>
         </div>
       </div>
@@ -1047,6 +1194,43 @@
           var mainEl = document.getElementById("conteudo");
           if (mainEl) mainEl.focus();
         });
+      });
+    }
+
+    var SPLASH_MS = 5000;
+    var btnAcessar = document.getElementById("acessar-sistema");
+    var splash = document.getElementById("splash-sistema");
+    var splashFill = document.getElementById("splash-bar-fill");
+    var splashProgress = document.getElementById("splash-progress");
+    if (btnAcessar && splash) {
+      btnAcessar.addEventListener("click", function (e) {
+        if (reduceMotion) return;
+        e.preventDefault();
+        var destino = btnAcessar.getAttribute("href") || "/login";
+        document.body.style.overflow = "hidden";
+        if (splashFill) {
+          splashFill.style.transition = "none";
+          splashFill.style.width = "0";
+        }
+        splash.removeAttribute("hidden");
+        splash.classList.add("is-visible");
+        if (splashFill) {
+          void splashFill.offsetWidth;
+          splashFill.style.transition = "";
+          splashFill.style.width = "100%";
+        }
+        if (splashProgress) splashProgress.setAttribute("aria-valuenow", "0");
+        var t0 = Date.now();
+        var tick = setInterval(function () {
+          if (!splashProgress) return;
+          var p = Math.min(100, Math.round(((Date.now() - t0) / SPLASH_MS) * 100));
+          splashProgress.setAttribute("aria-valuenow", String(p));
+          if (p >= 100) clearInterval(tick);
+        }, 200);
+        setTimeout(function () {
+          clearInterval(tick);
+          window.location.href = destino;
+        }, SPLASH_MS);
       });
     }
   </script>

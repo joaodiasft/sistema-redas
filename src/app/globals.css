@@ -10,4 +10,5 @@
 body {
   color: var(--erp-ink);
   background: var(--erp-bg);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
