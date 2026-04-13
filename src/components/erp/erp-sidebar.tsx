@@ -53,12 +53,19 @@ export function ErpSidebar() {
         >
           Site público
         </Link>
-        <Link
-          href="/login"
-          className="block rounded-lg px-3 py-2 text-center text-sm text-zinc-500 hover:bg-zinc-50"
+        <button
+          type="button"
+          className="w-full rounded-lg px-3 py-2 text-center text-sm text-zinc-500 hover:bg-zinc-50"
+          onClick={async () => {
+            await fetch("/api/auth/logout", {
+              method: "POST",
+              credentials: "include",
+            });
+            window.location.href = "/login";
+          }}
         >
           Sair
-        </Link>
+        </button>
       </div>
     </aside>
   );

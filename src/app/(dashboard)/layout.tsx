@@ -1,14 +1,16 @@
-import { ErpSidebar } from "@/components/erp/erp-sidebar";
+import { redirect } from "next/navigation";
+import { AdminShell } from "@/components/admin/admin-shell";
+import { getSessionFromCookies } from "@/lib/auth-server";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="flex min-h-screen">
-      <ErpSidebar />
-      <div className="flex min-w-0 flex-1 flex-col">{children}</div>
-    </div>
-  );
+  const session = await getSessionFromCookies();
+  if (!session || session.perfil !== "ADMIN") {
+    redirect("/login");
+  }
+
+  return <AdminShell userLabel={session.email}>{children}</AdminShell>;
 }

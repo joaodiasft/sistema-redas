@@ -23,10 +23,36 @@ export function LoginForm() {
   const [legalModal, setLegalModal] = useState<"termos" | "privacidade" | null>(
     null,
   );
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [loginLoading, setLoginLoading] = useState(false);
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    router.push("/dashboard");
+    setLoginError(null);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const email = String(fd.get("email") ?? "").trim();
+    const senha = String(fd.get("senha") ?? "");
+    setLoginLoading(true);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha }),
+        credentials: "include",
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+      };
+      if (!res.ok) {
+        setLoginError(data.error ?? "Não foi possível entrar. Tente novamente.");
+        return;
+      }
+      router.push("/dashboard");
+      router.refresh();
+    } finally {
+      setLoginLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -142,11 +168,21 @@ export function LoginForm() {
             <span className="text-sm text-zinc-600">Lembrar de mim</span>
           </label>
 
+          {loginError ? (
+            <p
+              className="rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-center text-sm text-red-800"
+              role="alert"
+            >
+              {loginError}
+            </p>
+          ) : null}
+
           <button
             type="submit"
-            className="w-full rounded-full bg-gradient-to-b from-[#e91e8c] to-[#c2185b] py-3.5 text-sm font-bold text-white shadow-[0_8px_24px_-4px_rgba(216,27,96,0.45)] transition hover:brightness-[1.05] active:scale-[0.99]"
+            disabled={loginLoading}
+            className="w-full rounded-full bg-gradient-to-b from-[#e91e8c] to-[#c2185b] py-3.5 text-sm font-bold text-white shadow-[0_8px_24px_-4px_rgba(216,27,96,0.45)] transition hover:brightness-[1.05] enabled:active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Entrar
+            {loginLoading ? "Entrando…" : "Entrar"}
           </button>
         </form>
 
