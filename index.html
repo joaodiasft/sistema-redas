@@ -221,6 +221,32 @@
       transform: translateY(0) scale(0.98);
       opacity: 0.95;
     }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      align-items: center;
+    }
+    @media (min-width: 480px) {
+      .hero-actions { gap: var(--space-3); }
+    }
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--pink-deep);
+      border: 2px solid var(--pink);
+      box-shadow: 0 2px 12px rgba(20, 18, 26, 0.06);
+    }
+    @media (hover: hover) {
+      .btn-secondary:hover {
+        background: var(--pink-soft);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(225, 29, 116, 0.12);
+      }
+    }
+    .btn-secondary:active {
+      transform: translateY(0) scale(0.98);
+      opacity: 0.95;
+    }
     .hero-visual {
       position: relative;
       min-height: 220px;
@@ -674,7 +700,10 @@
         </div>
         <h1 class="reveal">Decifre a sua ficha em poucos minutos</h1>
         <p class="lead reveal">Este guia segue a <strong>Chamada 1</strong> — o <strong>Controle de frequência</strong> do curso. Cada campo tem um “endereço” na folha: achou a linha certa, preencheu certo.</p>
-        <a href="#introducao" class="btn btn-primary reveal">Ver orientações</a>
+        <div class="hero-actions reveal">
+          <a href="#introducao" class="btn btn-primary">Ver orientações</a>
+          <a href="https://sistema-redas.vercel.app" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Acessar sistema</a>
+        </div>
       </div>
       <div class="hero-visual reveal" aria-hidden="true">
         <div class="hero-float"></div>
