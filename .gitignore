@@ -1,0 +1,14 @@
+# Ambiente local / IDE
+.vscode/
+.env
+.env.*
+
+# Ferramentas e skills locais (não fazem parte do site publicado)
+.claude/
+.agents/
+skills-lock.json
+
+# Dependências e caches comuns
+node_modules/
+dist/
+.vercel
