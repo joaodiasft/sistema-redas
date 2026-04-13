@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Passo a passo para preencher sua folha de controle do curso de redação — organização, clareza e novidades." />
+  <meta name="description" content="Guia oficial para preencher a ficha Controle de frequência (I semestre, 5 módulos) — alinhado à Chamada 1 do Curso de Redação." />
   <meta name="theme-color" content="#e11d74" />
-  <title>Folha de controle — Curso de Redação</title>
+  <title>Como preencher a ficha · Controle de frequência — Curso de Redação</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
@@ -321,6 +321,39 @@
     }
     .intro-box p { margin: 0; color: var(--ink); font-size: 1.08rem; }
 
+    .ficha-callout {
+      margin-top: var(--space-4);
+      padding: var(--space-4);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--pink-soft) 0%, rgba(255, 255, 255, 0.9) 100%);
+      border: 1px solid var(--line);
+      font-family: var(--font-display);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .ficha-callout span { color: var(--pink-deep); font-weight: 700; }
+    .ficha-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin: var(--space-3) 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .ficha-chips li {
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+    }
+
     /* Cards grid */
     .grid-cards {
       display: grid;
@@ -614,6 +647,8 @@
     .reveal-stagger.visible > *:nth-child(5) { transition-delay: 0.2s; }
     .reveal-stagger.visible > *:nth-child(6) { transition-delay: 0.24s; }
     .reveal-stagger.visible > *:nth-child(7) { transition-delay: 0.28s; }
+    .reveal-stagger.visible > *:nth-child(8) { transition-delay: 0.32s; }
+    .reveal-stagger.visible > *:nth-child(9) { transition-delay: 0.36s; }
 
     .visually-hidden {
       position: absolute;
@@ -635,16 +670,16 @@
       <div>
         <div class="hero-badge reveal">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          Curso de redação
+          I semestre · 5 módulos
         </div>
-        <h1 class="reveal">Passo a passo para preencher sua folha de controle</h1>
-        <p class="lead reveal">Organize corretamente seus dados, sua frequência, seus materiais e seu financeiro de forma simples, prática e segura.</p>
+        <h1 class="reveal">Decifre a sua ficha em poucos minutos</h1>
+        <p class="lead reveal">Este guia segue a <strong>Chamada 1</strong> — o <strong>Controle de frequência</strong> do curso. Cada campo tem um “endereço” na folha: achou a linha certa, preencheu certo.</p>
         <a href="#introducao" class="btn btn-primary reveal">Ver orientações</a>
       </div>
       <div class="hero-visual reveal" aria-hidden="true">
         <div class="hero-float"></div>
         <div class="hero-card">
-          <h3>Folha do dia</h3>
+          <h3>Sua linha de hoje</h3>
           <div class="hero-lines">
             <div class="hero-line"></div>
             <div class="hero-line"></div>
@@ -659,60 +694,61 @@
     <section id="introducao">
       <div class="wrap">
         <p class="section-label reveal">Comece por aqui</p>
-        <h2 class="section-title reveal">Orientações para um preenchimento sem erros</h2>
+        <h2 class="section-title reveal">A ficha é um mapa — você só marca onde esteve hoje</h2>
         <div class="intro-box reveal">
-          <p>Para facilitar o preenchimento da sua folha de controle, siga as orientações abaixo com atenção. Preencha apenas as informações corretas e referentes à aula do dia.</p>
+          <p>No topo está o seu cadastro. Abaixo, uma <strong>grade do semestre</strong>: do <strong>2º ao 5º módulo</strong>, com encontros <strong>I, II, III e IV</strong> — no total, <strong>16 aulas</strong> numeradas na folha. Depois vêm o <strong>controle de material</strong> e o <strong>financeiro</strong> por módulo. Respira: a gente te guia bloco a bloco.</p>
         </div>
+        <p class="ficha-callout reveal" role="note"><span>Dica de ouro:</span> trate a folha como passagem de embarque — <strong>uma linha por aula</strong>. O resto fica em branco até o dia chegar.</p>
       </div>
     </section>
 
     <section id="dados-iniciais" aria-labelledby="dados-titulo">
       <div class="wrap">
-        <p class="section-label reveal">Primeira parte</p>
-        <h2 class="section-title reveal" id="dados-titulo">Dados iniciais</h2>
-        <p class="section-intro reveal">Informações pessoais e de acesso — confira cada campo antes de seguir para a frequência.</p>
+        <p class="section-label reveal">Topo da ficha</p>
+        <h2 class="section-title reveal" id="dados-titulo">Cabeçalho: Aluno, turma e acessos</h2>
+        <p class="section-intro reveal">Igualzinho à primeira faixa da sua <strong>Chamada 1</strong>: quatro linhas que fecham identidade e login antes da grade de aulas.</p>
         <div class="grid-cards cols-3 reveal-stagger">
           <article class="card">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </div>
-            <h3>Nome</h3>
-            <p>Coloque seu nome completo. Se já estiver preenchido, apenas confira se está correto.</p>
+            <h3>Aluno</h3>
+            <p>É o campo <strong>ALUNO</strong> da ficha: nome completo, legível. Se já vier impresso, vira revisão — confira letras acentuadas e sobrenome.</p>
           </article>
           <article class="card">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
             <h3>Turma</h3>
-            <p>Verifique seu horário de aula e escreva a turma correspondente ao seu horário.</p>
+            <p>Campo <strong>TURMA</strong>: use o código ou horário que a recepção reconhece (o mesmo do grupo). Uma turma errada desloca tudo na organização.</p>
           </article>
           <article class="card">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             </div>
             <h3>E-mail</h3>
-            <p>Preencha com o e-mail que você mais usa, pois ele poderá ser importante para acessos e comunicação.</p>
+            <p>Linha <strong>EMAIL</strong>: o endereço que você abre todo dia. É pista para recuperação de acesso e avisos — zero typo.</p>
           </article>
           <article class="card">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             </div>
             <h3>Telefone</h3>
-            <p>Coloque o número de telefone que está no grupo, para evitar erros no cadastro.</p>
+            <p>Campo <strong>TELEFONE</strong>: o número que está no <strong>WhatsApp do curso</strong>. Assim o cadastro casa com o grupo e com a recepção.</p>
           </article>
           <article class="card">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             </div>
-            <h3>Acesso Sofia</h3>
-            <p>Esse acesso está no seu WhatsApp. Não compartilhe esses dados com ninguém.</p>
+            <h3>Sofia + senha no WhatsApp</h3>
+            <p>Na mesma linha da ficha: <strong>ACESSO SOFIA</strong> (seu login) e, ao lado, <strong>SENHA NO WHATSAPP</strong> — copie exatamente o que foi enviado no grupo. Dados pessoais: não repasse.</p>
           </article>
           <article class="card">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
-            <h3>Acesso Coredação</h3>
-            <p>Preencha com o e-mail usado no Coredação. Confira com atenção para não errar.</p>
+            <h3>Coredação + senha</h3>
+            <p><strong>ACESSO COREDAÇÃO</strong>: e-mail ou usuário da plataforma. No campo <strong>SENHA</strong>, use a senha oficial impressa na sua ficha (a que aparece ao lado na mesma linha). Conferiu no papel, conferiu na tela.</p>
           </article>
         </div>
       </div>
@@ -720,10 +756,28 @@
 
     <section id="frequencia" aria-labelledby="freq-titulo">
       <div class="wrap">
-        <p class="section-label reveal">Durante as aulas</p>
-        <h2 class="section-title reveal" id="freq-titulo">Controle de frequência</h2>
-        <p class="section-intro reveal">Cada coluna tem uma função — use apenas a linha do dia da sua aula.</p>
-        <div class="timeline reveal-stagger">
+        <p class="section-label reveal">A grande tabela</p>
+        <h2 class="section-title reveal" id="freq-titulo">Controle de frequência (a grade do semestre)</h2>
+        <p class="section-intro reveal">Na ficha, essa parte vem titulada <strong>Controle de frequência — I semestre (5 módulos)</strong>. As colunas são: <strong>N°</strong>, <strong>Módulo</strong>, <strong>Encontros</strong>, e aí entram os espaços que <em>você</em> completa.</p>
+        <ul class="ficha-chips reveal" aria-label="Colunas preenchidas pelo aluno na grade de frequência">
+          <li>Data</li>
+          <li>Chamada</li>
+          <li>Reposição</li>
+          <li>Entregou redação</li>
+          <li>Assinatura</li>
+        </ul>
+        <div class="timeline reveal-stagger" style="margin-top: var(--space-4);">
+          <article class="timeline-item">
+            <div class="row">
+              <div class="card-icon" style="margin-bottom:0; flex-shrink:0;" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+              </div>
+              <div>
+                <h3>Ache a sua linha no “calendário” impresso</h3>
+                <p><strong>N°</strong>, <strong>Módulo</strong> (do 2º ao 5º) e <strong>Encontros</strong> (I, II, III, IV) já vêm desenhados na folha — é o roteiro das 16 aulas. Localize <strong>só a linha de hoje</strong> (ex.: 4º módulo · III encontro) e ignore o resto por enquanto: elas esperam o dia delas.</p>
+              </div>
+            </div>
+          </article>
           <article class="timeline-item">
             <div class="row">
               <div class="card-icon" style="margin-bottom:0; flex-shrink:0;" aria-hidden="true">
@@ -731,7 +785,7 @@
               </div>
               <div>
                 <h3>Data</h3>
-                <p>Na coluna “Data”, coloque a data da aula do dia.</p>
+                <p>Na coluna <strong>DATA</strong>, a data da aula <strong>de hoje</strong> — o “carimbo” que prova que você estava naquele encontro específico da grade.</p>
               </div>
             </div>
           </article>
@@ -742,7 +796,7 @@
               </div>
               <div>
                 <h3>Chamada</h3>
-                <p>Na coluna “Chamada”, escreva “Presente” quando você estiver na aula.</p>
+                <p>Coluna <strong>CHAMADA</strong>: quando estiver na aula oficial daquela linha, registre <strong>Presente</strong>. É o “sim, estou aqui” para a coordenação.</p>
               </div>
             </div>
           </article>
@@ -753,7 +807,7 @@
               </div>
               <div>
                 <h3>Reposição</h3>
-                <p>A coluna “Reposição” só deve ser preenchida se você tiver faltado e estiver fazendo aula de reposição. Se você estiver na aula normal do dia, deixe essa parte em branco.</p>
+                <p><strong>REPOSIÇÃO</strong> só entra em cena se você <strong>faltou</strong> e está cumprindo aula em outro dia/horário. Aula normal? Deixe em branco — silêncio também informa.</p>
               </div>
             </div>
           </article>
@@ -764,7 +818,7 @@
               </div>
               <div>
                 <h3>Entregou redação</h3>
-                <p>Escreva quantas redações você vai entregar na recepção. Se não for entregar redação naquele dia, pode escrever “Não”.</p>
+                <p>Na coluna <strong>ENTREGOU REDAÇÃO</strong>, alinhe com a regra do curso: <strong>1 redação por aula</strong> — anote o que vai entregar na recepção naquele dia ou <strong>Não</strong> se não houver entrega.</p>
               </div>
             </div>
           </article>
@@ -775,7 +829,7 @@
               </div>
               <div>
                 <h3>Assinatura</h3>
-                <p>Depois de preencher sua linha corretamente, assine no local indicado. Antes de assinar, confira se todas as informações estão certas.</p>
+                <p>Coluna <strong>ASSINATURA</strong>: depois de conferir Data, Chamada, Reposição e Redação, assine na própria linha. A assinatura é o “fecho” do que você acabou de validar.</p>
               </div>
             </div>
           </article>
@@ -785,8 +839,8 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
               </div>
               <div>
-                <h3>Atenção importante</h3>
-                <p>Preencha somente a linha referente à aula do dia. Não escreva nas linhas das próximas aulas.</p>
+                <h3>Uma aula, uma linha</h3>
+                <p>Não “viaje” nas linhas futuras: a ficha é série, não spoiler. Preencha <strong>apenas</strong> o encontro do dia — as outras linhas ficam limpas até você atravessar a porta de novo.</p>
               </div>
             </div>
           </article>
@@ -796,30 +850,30 @@
 
     <section id="material" aria-labelledby="mat-titulo">
       <div class="wrap">
-        <p class="section-label reveal">Materiais</p>
-        <h2 class="section-title reveal" id="mat-titulo">Controle de material</h2>
-        <p class="section-intro reveal">Use a letra “P” quando pegar o item correspondente.</p>
+        <p class="section-label reveal">Matriz de materiais</p>
+        <h2 class="section-title reveal" id="mat-titulo">Controle de material (a grade 1ª a 4ª aula)</h2>
+        <p class="section-intro reveal">Abaixo da frequência, a ficha traz uma tabela <strong>N° / Material</strong> com linhas <strong>PROPOSTA</strong>, <strong>MATERIAL (AULA)</strong> e <strong>PASTA</strong>. No topo, as colunas se repetem em blocos <strong>1ªA · 2ªA · 3ªA · 4ªA</strong> para cada módulo — cada bloco é um “quadrante” de encontros daquele módulo.</p>
         <div class="grid-cards reveal-stagger">
           <article class="card">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
             </div>
-            <h3>Proposta do dia</h3>
-            <p>Se você pegou a proposta do dia, escreva a letra “P”.</p>
+            <h3>Linha PROPOSTA</h3>
+            <p>Recebeu a folha de proposta daquele encontro? Coloque <strong>P</strong> no cruzamento certo: linha <strong>PROPOSTA</strong> × coluna do seu <strong>módulo</strong> e <strong>aula (1ªA–4ªA)</strong> de hoje.</p>
           </article>
           <article class="card">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             </div>
-            <h3>Material do dia</h3>
-            <p>Se você pegou o material da aula, escreva a letra “P”.</p>
+            <h3>Linha MATERIAL (AULA)</h3>
+            <p>Pegou o apoio/impressos da aula? Mesma lógica: <strong>P</strong> na célula que cruza <strong>MATERIAL (AULA)</strong> com o encontro correto. Pense como bingo — só marca onde bate com o que você levou na mochila.</p>
           </article>
           <article class="card">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
             </div>
-            <h3>Pasta</h3>
-            <p>Se você recebeu a pasta na primeira aula, marque que pegou.</p>
+            <h3>Linha PASTA</h3>
+            <p>Na primeira vez que receber a pasta oficial do curso, registre <strong>P</strong> no quadrante do encontro em que ela foi entregue. Depois, essa linha costuma ficar quieta — é marco zero do seu arquivo físico.</p>
           </article>
         </div>
       </div>
@@ -827,30 +881,30 @@
 
     <section id="financeiro" aria-labelledby="fin-titulo">
       <div class="wrap">
-        <p class="section-label reveal">Pagamentos</p>
-        <h2 class="section-title reveal" id="fin-titulo">Financeiro</h2>
-        <p class="section-intro reveal">Mantenha o status e as assinaturas alinhados ao que foi pago e enviado.</p>
+        <p class="section-label reveal">Parcelas por módulo</p>
+        <h2 class="section-title reveal" id="fin-titulo">Financeiro (2º ao 5º módulo)</h2>
+        <p class="section-intro reveal">No fim da ficha, a tabela <strong>Pagamento</strong> lista <strong>2º, 3º, 4º e 5º módulos</strong> com colunas <strong>STATUS</strong> e <strong>ASSINATURA</strong> — é o extrato em papel do que entrou no caixa do curso.</p>
         <div class="grid-cards reveal-stagger">
           <article class="card">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             </div>
-            <h3>Status do pagamento</h3>
-            <p>Se você já pagou, escreva “Pago” no status.</p>
+            <h3>STATUS</h3>
+            <p>Quando a parcela daquele módulo estiver quitada, escreva <strong>Pago</strong> (ou o termo que a coordenação pedir) em <strong>STATUS</strong>. Antes, confira no app do banco se o PIX caiu e se o comprovante foi parar no contato certo.</p>
           </article>
           <article class="card">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             </div>
-            <h3>Comprovante</h3>
-            <p>Confira se o comprovante foi realmente enviado.</p>
+            <h3>Comprovante na mão</h3>
+            <p>Só carimbe o status depois do ritual completo: pagou → enviou o comprovante → recebeu “ok” no WhatsApp (se for o fluxo da turma). O papel acompanha a vida real; não adianta antecipar.</p>
           </article>
           <article class="card">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17h18M3 12h18M3 7h18"/></svg>
             </div>
-            <h3>Assinatura no financeiro</h3>
-            <p>Depois de confirmar que pagou, assine no local indicado.</p>
+            <h3>ASSINATURA financeira</h3>
+            <p>Com tudo conferido, assine na coluna <strong>ASSINATURA</strong> da mesma linha do módulo. É o “li e concordo” do financeiro — valendo fita crepe e boa fé.</p>
           </article>
         </div>
       </div>
@@ -861,7 +915,7 @@
         <h2 class="visually-hidden" id="aviso-titulo">Aviso importante</h2>
         <div class="alert-strip reveal">
           <p>Preencha com atenção e confira tudo antes de assinar.</p>
-          <span>Cada detalhe conta para manter seu cadastro e sua frequência corretos.</span>
+          <span>A ficha impressa e o digital precisam contar a mesma história: dados, presença, material e pagamento.</span>
         </div>
       </div>
     </section>
@@ -903,23 +957,23 @@
     <div class="wrap">
       <div>
         <p class="brand">Curso de Redação</p>
-        <p class="tag">Organização, clareza e acompanhamento do seu progresso.</p>
+        <p class="tag">1h30 de aula · 1 redação por aula · feedback personalizado — o que está na sua <strong>Chamada 1</strong> também está na nossa essência.</p>
       </div>
       <dl>
         <div>
           <dt>Contato</dt>
-          <dd><a href="#">WhatsApp do grupo / recepção</a></dd>
+          <dd><a href="tel:+5562981899570">(62) 98189-9570</a></dd>
         </div>
         <div>
           <dt>Instagram</dt>
-          <dd><a href="#" rel="noopener noreferrer">@seucurso</a></dd>
+          <dd><a href="https://www.instagram.com/redacao.mil.1000/" rel="noopener noreferrer">@redacao.mil.1000</a></dd>
         </div>
         <div>
           <dt>Professora</dt>
-          <dd>Nome da professora</dd>
+          <dd>Martinha</dd>
         </div>
       </dl>
-      <p class="bottom">© <span id="y"></span> Curso de Redação. Todos os direitos reservados.</p>
+      <p class="bottom">© <span id="y"></span> Curso de Redação · Professora Martinha. Todos os direitos reservados.</p>
     </div>
   </footer>
 
