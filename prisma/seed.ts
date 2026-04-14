@@ -502,6 +502,31 @@ async function main() {
     });
   }
 
+  /** Conta `professor.teste@rmil.com` precisa de registo `Professor` + turma para o painel funcionar. */
+  const uProfTeste = await prisma.usuario.findUnique({
+    where: { email: "professor.teste@rmil.com" },
+  });
+  if (uProfTeste) {
+    const profTeste = await prisma.professor.upsert({
+      where: { codigoPublico: "ProfTest" },
+      create: {
+        codigoPublico: "ProfTest",
+        nome: "Professor Teste",
+        materia: "Redação",
+        usuarioId: uProfTeste.id,
+      },
+      update: {
+        nome: "Professor Teste",
+        materia: "Redação",
+        usuarioId: uProfTeste.id,
+      },
+    });
+    await prisma.professorTurma.deleteMany({ where: { professorId: profTeste.id } });
+    await prisma.professorTurma.create({
+      data: { professorId: profTeste.id, turmaId: turmaR1.id },
+    });
+  }
+
   await prisma.sequenciaCodigo.update({
     where: { entidade: "ALUNO" },
     data: { proximo: 3 },

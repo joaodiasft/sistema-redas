@@ -22,18 +22,26 @@ Menu lateral: **Site público** → `/`, **Sair** → `/login`.
 
 ## Desenvolvimento local
 
-O projeto usa **PostgreSQL** (ex.: [Neon](https://neon.tech)). Copie `.env.example` para `.env` e defina `DATABASE_URL` com a connection string do painel (URI, com `?sslmode=require`).
+O projeto usa **PostgreSQL** (ex.: [Neon](https://neon.tech)). Copie `.env.example` para `.env` e defina `DATABASE_URL` com a connection string (URI com `?sslmode=require`).
 
 ```bash
 cp .env.example .env
 # Edite .env: DATABASE_URL=postgresql://...
 npm install
-npx prisma db push
-npm run db:seed
+npm run setup
 npm run dev
 ```
 
-**Admin principal (após seed):** `admin.redas@redas.com` / `redasmil2026`. Contas `@rmil.com` continuam para testes (`redas2026`). O painel `/dashboard` exige perfil `ADMIN` (professores/alunos são redirecionados ao login).
+`npm run setup` aplica migrações (`prisma migrate deploy`) e corre o seed. Em desenvolvimento sem histórico de migrações podes usar `npx prisma db push` + `npm run db:seed` em alternativa.
+
+**Admin principal (após seed):** `admin.redas@redas.com` / `redasmil2026`. Contas `@rmil.com` para testes (`redas2026`, exceto onde indicado). O painel `/dashboard` é só **ADMIN**; **professores** vão para `/painel/professor` e **alunos** para `/painel/aluno`.
+
+| Conta | Senha | Destino após login |
+|--------|--------|---------------------|
+| `admin.redas@redas.com` | `redasmil2026` | `/dashboard` |
+| `professor.teste@rmil.com` | `redas2026` | `/painel/professor` (ProfTest + turma R1) |
+| `aluno.teste@rmil.com` | `redas2026` | `/painel/aluno` |
+| `martha@rmil.com` | `redas2026` | `/painel/professor` (Prof001, várias turmas) |
 
 Se o banco já tiver tabelas antigas incompatíveis com o schema atual, no **SQL Editor** do Neon pode executar `DROP SCHEMA public CASCADE; CREATE SCHEMA public;` (apaga dados) e depois rodar `npx prisma db push` de novo.
 
