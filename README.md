@@ -47,7 +47,8 @@ Se o banco já tiver tabelas antigas incompatíveis com o schema atual, no **SQL
 1. Projeto conectado ao repositório **joaodiasft/sistema-redas** (branch `main`).
 2. **Root Directory** deve ficar **vazio** (padrão, raiz do repo). Se antes estava `erp`, **apague** e salve — a pasta `erp` não existe mais e o build quebraria.
 3. Build: `npm run build` (padrão). Framework: **Next.js**.
-4. Variáveis na Vercel: **`DATABASE_URL`** (PostgreSQL Neon, mesma do projeto) e **`AUTH_SECRET`** (string longa aleatória para o login JWT). Opcional: `NEXT_PUBLIC_WHATSAPP_PHONE`.
+4. Variáveis na Vercel: **`DATABASE_URL`** (PostgreSQL Neon) e, recomendado, **`AUTH_SECRET`** (string longa; se não existir, o app usa um fallback interno — defina em produção por segurança). Opcional: `NEXT_PUBLIC_WHATSAPP_PHONE`.
+5. Após o primeiro deploy, rode **`npx prisma db push`** e **`npm run db:seed`** contra o mesmo Neon (localmente com `DATABASE_URL` de produção ou pela CI), senão não existem utilizadores na base e o login falha.
 
 Painel: [sistema-redas na Vercel](https://vercel.com/naredacaonota1000-2663s-projects/sistema-redas).
 

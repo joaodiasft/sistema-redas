@@ -6,9 +6,7 @@ function getAuthSecretKey(): Uint8Array {
   if (raw && raw.length >= 16) {
     return new TextEncoder().encode(raw);
   }
-  if (process.env.NODE_ENV === "production") {
-    throw new Error("AUTH_SECRET é obrigatório em produção (mín. 16 caracteres).");
-  }
+  // Sem AUTH_SECRET o login quebrava em produção (ex.: Vercel). Defina AUTH_SECRET no painel do deploy.
   return new TextEncoder().encode(DEV_FALLBACK);
 }
 

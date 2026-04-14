@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { createPortal } from "react-dom";
 import { whatsAppLink } from "@/lib/whatsapp";
@@ -14,7 +13,6 @@ const MSG_SUPORTE =
   "Olá! Preciso de suporte na plataforma Redação Nota Mil.";
 
 export function LoginForm() {
-  const router = useRouter();
   const idEmail = useId();
   const idSenha = useId();
   const idLembrar = useId();
@@ -40,17 +38,32 @@ export function LoginForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
         credentials: "include",
+        cache: "no-store",
       });
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;
+        perfil?: string;
       };
       if (!res.ok) {
-        setLoginError(data.error ?? "Não foi possível entrar. Tente novamente.");
+        setLoginError(
+          data.error ??
+            (res.status === 401
+              ? "E-mail ou senha incorretos. Verifique e tente novamente."
+              : "Não foi possível entrar. Tente novamente."),
+        );
+        setLoginLoading(false);
         return;
       }
-      router.push("/dashboard");
-      router.refresh();
-    } finally {
+      const dest =
+        data.perfil === "ALUNO"
+          ? "/painel/aluno"
+          : data.perfil === "PROFESSOR"
+            ? "/painel/professor"
+            : "/dashboard";
+      // Navegação completa: evita duplo trabalho do router + refresh e sente-se mais rápido.
+      window.location.assign(dest);
+    } catch {
+      setLoginError("Falha de conexão. Verifique a internet e tente de novo.");
       setLoginLoading(false);
     }
   }
@@ -102,15 +115,16 @@ export function LoginForm() {
               >
                 <EnvelopeIcon />
               </span>
-              <input
-                id={idEmail}
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                placeholder="seu@email.com"
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-3 pl-11 pr-3.5 text-[0.9375rem] text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-[#d81b60]/40 focus:bg-white focus:ring-2 focus:ring-[#d81b60]/20"
-              />
+            <input
+              id={idEmail}
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              disabled={loginLoading}
+              placeholder="seu@email.com"
+              className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-3 pl-11 pr-3.5 text-[0.9375rem] text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-[#d81b60]/40 focus:bg-white focus:ring-2 focus:ring-[#d81b60]/20 disabled:cursor-not-allowed disabled:opacity-60"
+            />
             </div>
           </div>
 
@@ -144,8 +158,9 @@ export function LoginForm() {
                 type={showSenha ? "text" : "password"}
                 autoComplete="current-password"
                 required
+                disabled={loginLoading}
                 placeholder="••••••••"
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-3 pl-11 pr-12 text-[0.9375rem] text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-[#d81b60]/40 focus:bg-white focus:ring-2 focus:ring-[#d81b60]/20"
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-3 pl-11 pr-12 text-[0.9375rem] text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-[#d81b60]/40 focus:bg-white focus:ring-2 focus:ring-[#d81b60]/20 disabled:cursor-not-allowed disabled:opacity-60"
               />
               <button
                 type="button"
@@ -180,9 +195,16 @@ export function LoginForm() {
           <button
             type="submit"
             disabled={loginLoading}
-            className="w-full rounded-full bg-gradient-to-b from-[#e91e8c] to-[#c2185b] py-3.5 text-sm font-bold text-white shadow-[0_8px_24px_-4px_rgba(216,27,96,0.45)] transition hover:brightness-[1.05] enabled:active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+            className="relative flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#e91e8c] to-[#c2185b] py-3.5 text-sm font-bold text-white shadow-[0_8px_24px_-4px_rgba(216,27,96,0.45)] transition hover:brightness-[1.05] enabled:active:scale-[0.99] disabled:cursor-wait disabled:opacity-90"
           >
-            {loginLoading ? "Entrando…" : "Entrar"}
+            {loginLoading ? (
+              <>
+                <Spinner />
+                <span>Entrando…</span>
+              </>
+            ) : (
+              "Entrar"
+            )}
           </button>
         </form>
 
@@ -462,6 +484,15 @@ function CloseIcon() {
         strokeLinecap="round"
       />
     </svg>
+  );
+}
+
+function Spinner() {
+  return (
+    <span
+      className="inline-block h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-white border-t-transparent"
+      aria-hidden
+    />
   );
 }
 
