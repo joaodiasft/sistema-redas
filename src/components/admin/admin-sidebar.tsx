@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BarChart3,
+  Bell,
   Calendar,
   CalendarDays,
   ClipboardCheck,
@@ -25,6 +26,7 @@ const grupos: { titulo: string; itens: Item[] }[] = [
     titulo: "Área geral",
     itens: [
       { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { href: "/dashboard/avisos", label: "Avisos", icon: Bell },
       { href: "/dashboard/relatorios", label: "Relatórios", icon: BarChart3 },
       { href: "/dashboard/calendario-geral", label: "Calendário geral", icon: CalendarDays },
     ],

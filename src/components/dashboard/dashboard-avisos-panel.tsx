@@ -28,13 +28,16 @@ const prioridadeBadge: Record<string, string> = {
 export function DashboardAvisosPanel({
   cursos,
   turmas,
+  /** Na página dedicada de avisos, abre o formulário já expandido. */
+  startWithFormOpen = false,
 }: {
   cursos: CursoOpt[];
   turmas: TurmaOpt[];
+  startWithFormOpen?: boolean;
 }) {
   const [avisos, setAvisos] = useState<AvisoRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(startWithFormOpen);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
