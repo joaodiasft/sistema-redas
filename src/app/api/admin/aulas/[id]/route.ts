@@ -1,4 +1,5 @@
 import { requireAdminSession } from "@/lib/api-admin";
+import { optionalRelationId } from "@/lib/optional-fk";
 import { prisma } from "@/lib/prisma";
 
 type Ctx = { params: Promise<{ id: string }> };
@@ -30,10 +31,14 @@ export async function PATCH(req: Request, ctx: Ctx) {
     data.data = d;
   }
   if (body.turmaId !== undefined) data.turmaId = body.turmaId;
-  if (body.moduloId !== undefined) data.moduloId = body.moduloId || null;
-  if (body.professorId !== undefined) data.professorId = body.professorId || null;
+  if (body.moduloId !== undefined) data.moduloId = optionalRelationId(body.moduloId) ?? null;
+  if (body.professorId !== undefined) data.professorId = optionalRelationId(body.professorId) ?? null;
   if (body.titulo !== undefined) data.titulo = body.titulo?.trim() || null;
   if (body.observacao !== undefined) data.observacao = body.observacao?.trim() || null;
+
+  if (Object.keys(data).length === 0) {
+    return Response.json({ error: "Nenhum campo para atualizar." }, { status: 400 });
+  }
 
   try {
     const aula = await prisma.aulaAgendada.update({
@@ -46,8 +51,19 @@ export async function PATCH(req: Request, ctx: Ctx) {
       },
     });
     return Response.json({ aula });
-  } catch {
-    return Response.json({ error: "Aula não encontrada." }, { status: 404 });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.includes("Record") || msg.includes("P2025")) {
+      return Response.json({ error: "Aula não encontrada." }, { status: 404 });
+    }
+    if (msg.includes("Foreign key") || msg.includes("P2003")) {
+      return Response.json(
+        { error: "Vínculo inválido (turma, módulo ou professor)." },
+        { status: 400 },
+      );
+    }
+    console.error("[aulas PATCH]", e);
+    return Response.json({ error: "Erro ao atualizar aula." }, { status: 500 });
   }
 }
 

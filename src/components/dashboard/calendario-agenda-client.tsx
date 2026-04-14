@@ -53,6 +53,7 @@ export function CalendarioAgendaClient({
     try {
       const r = await fetch(`/api/admin/aulas?mes=${encodeURIComponent(mes + "-01")}`, {
         cache: "no-store",
+        credentials: "include",
       });
       if (!r.ok) throw new Error("Falha ao carregar aulas");
       const j = (await r.json()) as { aulas: AulaApi[] };
@@ -97,10 +98,18 @@ export function CalendarioAgendaClient({
         method: editingId ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
+        credentials: "include",
       });
-      const j = (await r.json()) as { error?: string };
+      const raw = await r.text();
+      let j: { error?: string } = {};
+      try {
+        j = JSON.parse(raw) as { error?: string };
+      } catch {
+        setError(raw.slice(0, 120) || "Resposta inválida do servidor.");
+        return;
+      }
       if (!r.ok) {
-        setError(j.error ?? "Erro ao salvar");
+        setError(j.error ?? `Erro ${r.status}`);
         return;
       }
       e.currentTarget.reset();
@@ -115,7 +124,7 @@ export function CalendarioAgendaClient({
 
   async function onDelete(id: string) {
     if (!confirm("Excluir esta aula do calendário?")) return;
-    const r = await fetch(`/api/admin/aulas/${id}`, { method: "DELETE" });
+    const r = await fetch(`/api/admin/aulas/${id}`, { method: "DELETE", credentials: "include" });
     if (r.ok) await load();
   }
 

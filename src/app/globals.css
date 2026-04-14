@@ -4,11 +4,27 @@
 
 :root {
   --erp-bg: #f7f5f8;
-  --erp-ink: #14121a;
+  --erp-ink: #111827;
+  --admin-accent: #e11d48;
+  --admin-surface: #ffffff;
+  --admin-muted: #6b7280;
 }
 
 body {
   color: var(--erp-ink);
-  background: var(--erp-bg);
+  background: #f4f4f5;
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Fundo do painel admin: grade de pontos (referência visual) */
+.admin-app-bg {
+  background-color: #121212;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-app-bg {
+    background-image: none;
+  }
 }

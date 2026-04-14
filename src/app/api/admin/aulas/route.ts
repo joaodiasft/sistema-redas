@@ -1,4 +1,5 @@
 import { requireAdminSession } from "@/lib/api-admin";
+import { optionalRelationId } from "@/lib/optional-fk";
 import { prisma } from "@/lib/prisma";
 import { endOfMonth, startOfMonth } from "date-fns";
 
@@ -45,8 +46,8 @@ export async function POST(req: Request) {
     return Response.json({ error: "JSON inválido" }, { status: 400 });
   }
 
-  if (!body.data || !body.turmaId) {
-    return Response.json({ error: "data e turmaId são obrigatórios." }, { status: 400 });
+  if (!body.data || !body.turmaId?.trim()) {
+    return Response.json({ error: "Data e turma são obrigatórios." }, { status: 400 });
   }
 
   const data = new Date(body.data);
@@ -54,21 +55,38 @@ export async function POST(req: Request) {
     return Response.json({ error: "Data inválida." }, { status: 400 });
   }
 
-  const aula = await prisma.aulaAgendada.create({
-    data: {
-      data,
-      turmaId: body.turmaId,
-      moduloId: body.moduloId || null,
-      professorId: body.professorId || null,
-      titulo: body.titulo?.trim() || null,
-      observacao: body.observacao?.trim() || null,
-    },
-    include: {
-      turma: { include: { curso: true } },
-      modulo: true,
-      professor: true,
-    },
-  });
+  const moduloId = optionalRelationId(body.moduloId ?? null) ?? null;
+  const professorId = optionalRelationId(body.professorId ?? null) ?? null;
 
-  return Response.json({ aula });
+  try {
+    const aula = await prisma.aulaAgendada.create({
+      data: {
+        data,
+        turmaId: body.turmaId.trim(),
+        moduloId,
+        professorId,
+        titulo: body.titulo?.trim() || null,
+        observacao: body.observacao?.trim() || null,
+      },
+      include: {
+        turma: { include: { curso: true } },
+        modulo: true,
+        professor: true,
+      },
+    });
+    return Response.json({ aula });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.includes("Foreign key") || msg.includes("violates foreign key") || msg.includes("P2003")) {
+      return Response.json(
+        {
+          error:
+            "Não foi possível salvar: verifique se turma, módulo e professor existem e estão corretos.",
+        },
+        { status: 400 },
+      );
+    }
+    console.error("[aulas POST]", e);
+    return Response.json({ error: "Erro ao criar aula. Tente novamente." }, { status: 500 });
+  }
 }

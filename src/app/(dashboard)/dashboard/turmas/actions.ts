@@ -45,6 +45,55 @@ export async function criarTurma(
   }
 
   revalidatePath("/dashboard/turmas");
+  revalidatePath("/dashboard/cursos-turmas");
+  revalidatePath("/dashboard");
+  return { ok: true };
+}
+
+export async function atualizarTurma(
+  _prev: TurmaActionState,
+  formData: FormData,
+): Promise<TurmaActionState> {
+  const id = String(formData.get("id") ?? "").trim();
+  const cursoId = String(formData.get("cursoId") ?? "").trim();
+  const codigo = String(formData.get("codigo") ?? "").trim();
+  const nome = String(formData.get("nome") ?? "").trim();
+  const horaInicio = String(formData.get("horaInicio") ?? "").trim() || null;
+  const horaFim = String(formData.get("horaFim") ?? "").trim() || null;
+  const diaSemanaRaw = formData.get("diaSemana");
+  const capacidade = Number(formData.get("capacidade") ?? 30);
+  const classe = String(formData.get("classe") ?? "ENSINO_MEDIO") as ClasseTurma;
+  const ativa = formData.get("ativa") === "on" || formData.get("ativa") === "true";
+
+  if (!id || !cursoId || !codigo || !nome) {
+    return { ok: false, error: "Dados incompletos." };
+  }
+
+  const diaSemana =
+    diaSemanaRaw === "" || diaSemanaRaw === null ? null : Number(diaSemanaRaw);
+
+  try {
+    await prisma.turma.update({
+      where: { id },
+      data: {
+        cursoId,
+        codigo,
+        nome,
+        horaInicio,
+        horaFim,
+        diaSemana: Number.isFinite(diaSemana) ? diaSemana : null,
+        capacidade: Number.isFinite(capacidade) ? capacidade : 30,
+        classe,
+        ativa,
+      },
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "Erro ao salvar.";
+    return { ok: false, error: msg.includes("Unique") ? "Código já existe neste curso." : msg };
+  }
+
+  revalidatePath("/dashboard/turmas");
+  revalidatePath("/dashboard/cursos-turmas");
   revalidatePath("/dashboard");
   return { ok: true };
 }
@@ -58,5 +107,6 @@ export async function excluirTurmaAction(formData: FormData): Promise<void> {
     return;
   }
   revalidatePath("/dashboard/turmas");
+  revalidatePath("/dashboard/cursos-turmas");
   revalidatePath("/dashboard");
 }
