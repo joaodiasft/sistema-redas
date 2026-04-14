@@ -2,6 +2,7 @@ import { revalidatePath } from "next/cache";
 import { requireAdminSession } from "@/lib/api-admin";
 import { optionalRelationId } from "@/lib/optional-fk";
 import { prisma } from "@/lib/prisma";
+import { revalidateAdminDashboard } from "@/lib/revalidate-admin";
 import { revalidatePainelProfessor } from "@/lib/revalidate-paineis";
 
 type Ctx = { params: Promise<{ id: string }> };
@@ -53,6 +54,7 @@ export async function PATCH(req: Request, ctx: Ctx) {
       },
     });
     revalidatePath("/dashboard/operacional/calendario", "layout");
+    revalidateAdminDashboard();
     revalidatePainelProfessor();
     return Response.json({ aula });
   } catch (e) {
@@ -80,6 +82,7 @@ export async function DELETE(_req: Request, ctx: Ctx) {
   try {
     await prisma.aulaAgendada.delete({ where: { id } });
     revalidatePath("/dashboard/operacional/calendario", "layout");
+    revalidateAdminDashboard();
     revalidatePainelProfessor();
     return Response.json({ ok: true });
   } catch {

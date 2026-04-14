@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { revalidateAdminDashboard } from "@/lib/revalidate-admin";
 import { revalidatePainelProfessor } from "@/lib/revalidate-paineis";
 import { assertAdminMutation } from "@/lib/require-admin-mutation";
 
@@ -47,6 +48,7 @@ export async function criarModulo(
 
   revalidatePath("/dashboard/modulos");
   revalidatePath("/dashboard");
+  revalidateAdminDashboard();
   revalidatePainelProfessor();
   return { ok: true };
 }
@@ -63,5 +65,6 @@ export async function excluirModuloAction(formData: FormData): Promise<void> {
     return;
   }
   revalidatePath("/dashboard/modulos");
+  revalidateAdminDashboard();
   revalidatePainelProfessor();
 }

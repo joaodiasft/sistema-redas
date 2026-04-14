@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { revalidateAdminDashboard } from "@/lib/revalidate-admin";
 import { revalidatePainelProfessor } from "@/lib/revalidate-paineis";
 import { assertAdminMutation } from "@/lib/require-admin-mutation";
 
@@ -37,6 +38,7 @@ export async function criarCurso(
   revalidatePath("/dashboard/cursos");
   revalidatePath("/dashboard/cursos-turmas");
   revalidatePath("/dashboard/turmas");
+  revalidateAdminDashboard();
   revalidatePainelProfessor();
   return { ok: true };
 }
@@ -72,6 +74,7 @@ export async function atualizarCurso(
 
   revalidatePath("/dashboard/cursos");
   revalidatePath("/dashboard/cursos-turmas");
+  revalidateAdminDashboard();
   revalidatePainelProfessor();
   return { ok: true };
 }
@@ -101,6 +104,7 @@ export async function excluirCurso(
   }
   revalidatePath("/dashboard/cursos");
   revalidatePath("/dashboard/cursos-turmas");
+  revalidateAdminDashboard();
   revalidatePainelProfessor();
   return { ok: true };
 }

@@ -18,5 +18,8 @@ dist/
 .next/
 out/
 *.tsbuildinfo
+playwright-report/
+test-results/
+
 prisma/*.db
 prisma/*.db-journal

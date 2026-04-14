@@ -10,6 +10,7 @@ import {
 } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { assertAdminMutation } from "@/lib/require-admin-mutation";
+import { revalidateAdminDashboard } from "@/lib/revalidate-admin";
 import { revalidatePainelAluno, revalidatePainelProfessor } from "@/lib/revalidate-paineis";
 
 export type CriarAlunoState = { ok: boolean; error?: string };
@@ -143,6 +144,7 @@ export async function criarAluno(
   }
 
   revalidatePath("/dashboard/alunos");
+  revalidateAdminDashboard();
   revalidatePainelProfessor();
   revalidatePainelAluno();
   redirect("/dashboard/alunos");

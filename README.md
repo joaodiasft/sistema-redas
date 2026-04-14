@@ -15,7 +15,9 @@ Monorepositório com **Next.js** na **raiz do Git**: landing em `/`, ERP em `/lo
 | `/` | Landing (`public/index.html`, middleware) |
 | `/login` | Login (JWT + cookie; apenas **ADMIN** acessa `/dashboard`) |
 | `/dashboard` | Painel |
-| `/dashboard/alunos` … `/dashboard/configuracoes` | Módulos (placeholders) |
+| `/dashboard/*` | ERP admin (cadastro, operacional, relatórios — ver secção abaixo) |
+| `/painel/professor`, `/painel/aluno` | Painéis só leitura (professor / aluno) |
+| `/api/*` | APIs (login, admin, painel professor) |
 | outras | 404 com links úteis |
 
 Menu lateral: **Site público** → `/`, **Sair** → `/login`.
@@ -43,6 +45,16 @@ npm run dev
 | `aluno.teste@rmil.com` | `redas2026` | `/painel/aluno` |
 | `martha@rmil.com` | `redas2026` | `/painel/professor` (Prof001, várias turmas) |
 
+### Atualização em “tempo real” (admin → base → ecrãs)
+
+As alterações feitas no ERP gravam na base **PostgreSQL** via **Server Actions** (`src/app/(dashboard)/dashboard/**/actions.ts`) ou **APIs** (`src/app/api/admin/*`). Depois de guardar, o Next.js invalida o cache com `revalidatePath` para:
+
+- **Painel principal** `/dashboard` (`revalidateAdminDashboard`) — métricas e cartões atualizam no próximo carregamento.
+- Rotas específicas (ex.: `/dashboard/turmas`, `/dashboard/alunos`).
+- **Painéis** professor/aluno (`revalidatePainelProfessor` / `revalidatePainelAluno`) quando o dado os afeta (turmas, presenças, avisos, aulas agendadas, etc.).
+
+Ou seja: não há WebSocket; a consistência é **pedido HTTP seguinte** ou **navegação** — padrão normal em App Router.
+
 Se o banco já tiver tabelas antigas incompatíveis com o schema atual, no **SQL Editor** do Neon pode executar `DROP SCHEMA public CASCADE; CREATE SCHEMA public;` (apaga dados) e depois rodar `npx prisma db push` de novo.
 
 - http://localhost:3000/ — landing  
@@ -60,6 +72,81 @@ Se o banco já tiver tabelas antigas incompatíveis com o schema atual, no **SQL
 
 Painel: [sistema-redas na Vercel](https://vercel.com/naredacaonota1000-2663s-projects/sistema-redas).
 
+## Painel administrativo — guia visual (Playwright)
+
+Cada item do menu lateral foi percorrido com login de **admin**; as imagens em `docs/img/admin/` são geradas automaticamente (1440×900, página completa).
+
+**Gerar ou atualizar capturas** (servidor em `http://127.0.0.1:3000`; reutiliza `npm run dev` se já estiver a correr):
+
+```bash
+npx playwright install chromium   # primeira vez
+set E2E_ADMIN_EMAIL=admin.redas@redas.com
+set E2E_ADMIN_PASSWORD=redasmil2026
+npm run screenshots:admin
+```
+
+| # | Rota | Função | Dados (Prisma) | Após guardar |
+|---|------|--------|----------------|--------------|
+| 1 | `/dashboard` | Resumo, gráficos, calendário do mês, avisos | agregados + `AulaAgendada`, `AvisoSistema` | — |
+| 2 | `/dashboard/relatorios` | Relatórios exportáveis | consultas agregadas | — |
+| 3 | `/dashboard/calendario-geral` | Visão mensal de todas as turmas | `Turma`, `AulaAgendada` | — |
+| 4 | `/dashboard/alunos` | Lista de alunos | `Aluno`, `Matricula` | Seed + CRUD novo aluno |
+| 5 | `/dashboard/alunos/novo` | Criar aluno + matrículas | `Usuario`, `Aluno`, `Matricula` | `revalidateAdminDashboard` + painéis |
+| 6 | `/dashboard/cursos-turmas` | Visão cruzada curso/turma | `Curso`, `Turma` | — |
+| 7 | `/dashboard/turmas` | CRUD turmas | `Turma` | Admin + painéis |
+| 8 | `/dashboard/professores` | CRUD professores e vínculos | `Professor`, `ProfessorTurma` | Admin + painel professor |
+| 9 | `/dashboard/modulos` | Módulos do semestre | `ModuloCurso`, `Semestre` | Admin + painel |
+| 10 | `/dashboard/operacional/presenca` | Lançar presenças | `PresencaEncontro` | Admin + painel professor/aluno |
+| 11 | `/dashboard/operacional/reposicao` | Reposições | `ReposicaoRegistro` | Admin dashboard |
+| 12 | `/dashboard/operacional/calendario` | Aulas extras (API admin) | `AulaAgendada` | Admin + painel professor |
+| 13 | `/dashboard/operacional/financeiro` | UI de confirmação (preview) | — | Evoluir para CRUD parcelas |
+| 14 | `/dashboard/operacional/redacao` | Entregas de redação | `EntregaRedacao` | — |
+| 15–17 | `/dashboard/configuracoes/*` | Configurações e limites | `ConfiguracaoSistema`, etc. | Conforme formulário |
+| 18 | `/dashboard/usuarios` | Documentação de perfis | — | Informativo |
+| 19 | `/dashboard/semestre-modulos` | Documentação semestre/módulos | — | Informativo |
+
+**Nota:** `/dashboard/frequencia` redireciona para **Presença** operacional. `/dashboard/materiais` redireciona para **Módulos**.
+
+### Capturas (clique para ampliar no GitHub)
+
+![Dashboard](docs/img/admin/01-dashboard.png)
+
+![Relatórios](docs/img/admin/02-relatorios.png)
+
+![Calendário geral](docs/img/admin/03-calendario-geral.png)
+
+![Alunos](docs/img/admin/04-alunos.png)
+
+![Novo aluno](docs/img/admin/05-aluno-novo.png)
+
+![Cursos e turmas](docs/img/admin/06-cursos-turmas.png)
+
+![Turmas](docs/img/admin/07-turmas.png)
+
+![Professores](docs/img/admin/08-professores.png)
+
+![Módulos](docs/img/admin/09-modulos.png)
+
+![Presença](docs/img/admin/10-presenca.png)
+
+![Reposição](docs/img/admin/11-reposicao.png)
+
+![Calendário operacional](docs/img/admin/12-calendario-operacional.png)
+
+![Financeiro operacional](docs/img/admin/13-financeiro-operacional.png)
+
+![Entrega de redação](docs/img/admin/14-redacao.png)
+
+![Configurações](docs/img/admin/15-configuracoes.png)
+
+![Acesso aluno](docs/img/admin/16-acesso-aluno.png)
+
+![Sistema](docs/img/admin/17-sistema.png)
+
+![Usuários](docs/img/admin/18-usuarios.png)
+
+![Semestre e módulos](docs/img/admin/19-semestre-modulos.png)
+
 ## Estrutura
 
 - `src/` — App Router, componentes, middleware  
@@ -74,6 +161,7 @@ Não commite `.env`, senhas nem URLs de banco com credenciais.
 
 [github.com/joaodiasft/sistema-redas](https://github.com/joaodiasft/sistema-redas)
 
-## Capturas no README (opcional)
+## Testes E2E
 
-Salve PNG em `docs/img/` e referencie, por exemplo: `![Build](docs/img/vercel-next.png)`.
+- `npm run test:e2e` — todos os testes Playwright em `e2e/`.
+- `npm run screenshots:admin` — apenas capturas do README (pasta `docs/img/admin/`).

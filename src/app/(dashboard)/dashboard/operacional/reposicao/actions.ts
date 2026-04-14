@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { revalidateAdminDashboard } from "@/lib/revalidate-admin";
 import { assertAdminMutation } from "@/lib/require-admin-mutation";
 
 export type ReposicaoState = { ok: boolean; error?: string };
@@ -42,5 +43,6 @@ export async function registrarReposicao(
   }
 
   revalidatePath("/dashboard/operacional/reposicao");
+  revalidateAdminDashboard();
   return { ok: true };
 }

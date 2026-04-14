@@ -1,6 +1,7 @@
 import { PrioridadeAviso } from "@prisma/client";
 import { requireAdminSession } from "@/lib/api-admin";
 import { prisma } from "@/lib/prisma";
+import { revalidateAdminDashboard } from "@/lib/revalidate-admin";
 import { revalidatePainelAluno, revalidatePainelProfessor } from "@/lib/revalidate-paineis";
 
 export async function GET() {
@@ -69,6 +70,7 @@ export async function POST(req: Request) {
     },
   });
 
+  revalidateAdminDashboard();
   revalidatePainelProfessor();
   revalidatePainelAluno();
 

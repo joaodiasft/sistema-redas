@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 import { PerfilUsuario } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { revalidateAdminDashboard } from "@/lib/revalidate-admin";
 import { revalidatePainelProfessor } from "@/lib/revalidate-paineis";
 import { assertAdminMutation } from "@/lib/require-admin-mutation";
 
@@ -79,6 +80,7 @@ export async function criarProfessor(
   }
 
   revalidatePath("/dashboard/professores");
+  revalidateAdminDashboard();
   revalidatePainelProfessor();
   return { ok: true };
 }
@@ -118,6 +120,7 @@ export async function atualizarProfessor(
   }
 
   revalidatePath("/dashboard/professores");
+  revalidateAdminDashboard();
   revalidatePainelProfessor();
   return { ok: true };
 }
@@ -148,6 +151,7 @@ export async function excluirProfessor(
   }
 
   revalidatePath("/dashboard/professores");
+  revalidateAdminDashboard();
   revalidatePainelProfessor();
   return { ok: true };
 }
