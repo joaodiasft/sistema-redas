@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${plusJakarta.variable} ${fraunces.variable}`}>
-      <body className="min-h-screen font-sans antialiased">{children}</body>
+      <body className="min-h-dvh font-sans antialiased">{children}</body>
     </html>
   );
 }

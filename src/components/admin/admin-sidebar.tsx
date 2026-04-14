@@ -70,7 +70,9 @@ export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="flex h-full min-h-0 flex-col bg-white">
       <div className="border-b border-zinc-100 px-4 py-5">
-        <span className="text-lg font-bold tracking-tight text-[#e11d48]">Redação Nota Mil</span>
+        <span className="font-display text-lg font-bold tracking-tight text-[color:var(--admin-accent)]">
+          Redação Nota Mil
+        </span>
         <span className="mt-0.5 block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-zinc-400">
           Gestão escolar
         </span>
@@ -90,13 +92,16 @@ export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
                     <Link
                       href={item.href}
                       onClick={onNavigate}
-                      className={`flex items-center gap-3 rounded-l-lg py-2.5 pl-3 pr-2 text-sm font-medium transition ${
+                      className={`admin-focus-ring flex items-center gap-3 rounded-l-lg py-2.5 pl-3 pr-2 text-sm font-medium transition motion-reduce:transition-none ${
                         on
-                          ? "border-r-[3px] border-[#e11d48] bg-gradient-to-l from-rose-50/90 to-white text-[#be185d] shadow-sm"
+                          ? "admin-nav-link-active border-r-[3px] border-[color:var(--admin-accent)] text-rose-950 shadow-sm"
                           : "border-r-[3px] border-transparent text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"
                       }`}
                     >
-                      <Icon className={`h-4 w-4 shrink-0 ${on ? "text-[#e11d48]" : "text-zinc-400"}`} />
+                      <Icon
+                        className={`h-4 w-4 shrink-0 ${on ? "text-[color:var(--admin-accent)]" : "text-zinc-400"}`}
+                        aria-hidden
+                      />
                       {item.label}
                     </Link>
                   </li>
@@ -110,7 +115,7 @@ export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
         <Link
           href="/dashboard/alunos/novo"
           onClick={onNavigate}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#e11d48] px-3 py-2.5 text-sm font-semibold text-white shadow-md shadow-rose-500/25 transition hover:bg-[#be123c]"
+          className="admin-focus-ring flex w-full touch-manipulation items-center justify-center gap-2 rounded-xl bg-[color:var(--admin-accent)] px-3 py-2.5 text-sm font-semibold text-[color:var(--admin-accent-foreground)] shadow-md shadow-rose-500/25 transition hover:bg-[color:var(--admin-accent-hover)] active:scale-[0.99] motion-reduce:active:scale-100"
         >
           + Novo aluno
         </Link>
