@@ -5,11 +5,6 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/dashboard/turmas",
-        destination: "/dashboard/cursos-turmas",
-        permanent: false,
-      },
-      {
         source: "/dashboard/frequencia",
         destination: "/dashboard/operacional/presenca",
         permanent: false,
