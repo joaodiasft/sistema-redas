@@ -139,7 +139,7 @@ export default async function PainelProfessorDashboardPage() {
       desc: "Suas turmas vinculadas",
       icon: GraduationCap,
       className:
-        "from-indigo-500/10 to-indigo-600/5 text-indigo-800 border-indigo-100",
+        "from-teal-500/15 to-teal-600/5 text-teal-900 border-teal-100",
     },
     {
       href: "/painel/professor/alunos",
@@ -173,10 +173,10 @@ export default async function PainelProfessorDashboardPage() {
 
   if (turmaIds.length === 0) {
     return (
-      <div className="rounded-3xl border border-dashed border-zinc-200 bg-white p-10 text-center shadow-sm">
-        <GraduationCap className="mx-auto h-12 w-12 text-zinc-300" aria-hidden />
-        <h1 className="mt-4 text-xl font-bold text-zinc-900">Nenhuma turma vinculada</h1>
-        <p className="mt-2 text-sm text-zinc-600">
+      <div className="painel-card-hero border-dashed border-teal-200/80 bg-white/90 p-8 text-center sm:p-10">
+        <GraduationCap className="mx-auto h-12 w-12 text-teal-400" aria-hidden />
+        <h1 className="mt-4 font-display text-xl font-semibold text-zinc-900">Nenhuma turma vinculada</h1>
+        <p className="painel-prose-muted mx-auto mt-3">
           Peça à secretaria para associar turmas ao seu cadastro de professor.
         </p>
       </div>
@@ -184,61 +184,61 @@ export default async function PainelProfessorDashboardPage() {
   }
 
   return (
-    <div className="space-y-10">
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-100/80 bg-gradient-to-br from-indigo-50/90 via-white to-white p-6 shadow-[0_20px_60px_-24px_rgba(79,70,229,0.25)] sm:p-8">
-        <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-indigo-200/25 blur-3xl" />
+    <div className="space-y-10 sm:space-y-12">
+      <section className="painel-card-hero relative overflow-hidden bg-gradient-to-br from-teal-50/90 via-white to-white p-6 sm:p-8">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-teal-200/30 blur-3xl" />
         <div className="relative">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-600/90">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-teal-700/90">
             Painel pedagógico
           </p>
-          <h1 className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+          <h1 className="font-display mt-2 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
             Olá, {professor.nome.split(" ")[0]}
           </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-600">
+          <p className="painel-prose-muted mt-2">
             Visualização das suas turmas e alunos — sem edição. Dados restritos ao seu vínculo na
             plataforma.
           </p>
-          <p className="mt-3 text-xs font-medium text-zinc-500">
+          <p className="mt-3 text-xs font-medium text-zinc-600">
             {professor.materia} · {professor.codigoPublico}
           </p>
         </div>
       </section>
 
       <section>
-        <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-zinc-400">
+        <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-zinc-500">
           Visão geral
         </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm">
-            <p className="text-xs font-semibold uppercase text-zinc-400">Cursos</p>
-            <p className="mt-2 text-3xl font-bold text-zinc-900">{cursosCount}</p>
-            <p className="text-xs text-zinc-500">Nos quais você leciona</p>
+        <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="painel-card p-4 sm:p-5">
+            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Cursos</p>
+            <p className="mt-2 text-3xl font-bold tabular-nums tracking-tight text-zinc-900">{cursosCount}</p>
+            <p className="mt-1 text-xs text-zinc-600">Nos quais você leciona</p>
           </div>
-          <div className="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm">
-            <p className="text-xs font-semibold uppercase text-zinc-400">Turmas</p>
-            <p className="mt-2 text-3xl font-bold text-zinc-900">{turmasCount}</p>
-            <p className="text-xs text-zinc-500">Turmas vinculadas a você</p>
+          <div className="painel-card p-4 sm:p-5">
+            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Turmas</p>
+            <p className="mt-2 text-3xl font-bold tabular-nums tracking-tight text-zinc-900">{turmasCount}</p>
+            <p className="mt-1 text-xs text-zinc-600">Turmas vinculadas a você</p>
           </div>
-          <div className="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm">
-            <p className="text-xs font-semibold uppercase text-zinc-400">Alunos</p>
-            <p className="mt-2 text-3xl font-bold text-zinc-900">{totalAlunos}</p>
-            <p className="text-xs text-zinc-500">Matrículas nas suas turmas</p>
+          <div className="painel-card p-4 sm:p-5">
+            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Alunos</p>
+            <p className="mt-2 text-3xl font-bold tabular-nums tracking-tight text-zinc-900">{totalAlunos}</p>
+            <p className="mt-1 text-xs text-zinc-600">Matrículas nas suas turmas</p>
           </div>
-          <div className="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm">
-            <p className="text-xs font-semibold uppercase text-zinc-400">Aulas extras (mês)</p>
-            <p className="mt-2 text-3xl font-bold text-zinc-900">{aulasMes.length}</p>
-            <p className="text-xs text-zinc-500">Lançamentos no calendário · {format(now, "MMMM yyyy", { locale: ptBR })}</p>
+          <div className="painel-card p-4 sm:p-5">
+            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Aulas extras (mês)</p>
+            <p className="mt-2 text-3xl font-bold tabular-nums tracking-tight text-zinc-900">{aulasMes.length}</p>
+            <p className="mt-1 text-xs text-zinc-600">Lançamentos no calendário · {format(now, "MMMM yyyy", { locale: ptBR })}</p>
           </div>
         </div>
       </section>
 
       <section className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm sm:p-6">
-          <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-zinc-400">
-            <BarChart3 className="h-4 w-4" aria-hidden />
+        <div className="painel-card p-5 sm:p-6">
+          <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-zinc-500">
+            <BarChart3 className="h-4 w-4 shrink-0" aria-hidden />
             Frequência geral (suas turmas)
           </h2>
-          <p className="mt-4 text-4xl font-bold text-zinc-900">
+          <p className="mt-4 text-4xl font-bold tabular-nums text-zinc-900">
             {pctTurmas !== null ? `${pctTurmas}%` : "—"}
           </p>
           <p className="mt-1 text-sm text-zinc-600">
@@ -249,16 +249,16 @@ export default async function PainelProfessorDashboardPage() {
           {pctTurmas !== null ? (
             <div className="mt-4 h-2 overflow-hidden rounded-full bg-zinc-100">
               <div
-                className="h-full rounded-full bg-indigo-500 transition-all"
+                className="h-full rounded-full bg-teal-500 transition-all"
                 style={{ width: `${Math.min(100, pctTurmas)}%` }}
               />
             </div>
           ) : null}
         </div>
 
-        <div className="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm sm:p-6">
-          <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-zinc-400">
-            <CalendarDays className="h-4 w-4" aria-hidden />
+        <div className="painel-card p-5 sm:p-6">
+          <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-zinc-500">
+            <CalendarDays className="h-4 w-4 shrink-0" aria-hidden />
             Próximos dias
           </h2>
           <ul className="mt-4 space-y-3">
@@ -274,7 +274,7 @@ export default async function PainelProfessorDashboardPage() {
                     <p className="text-sm font-medium text-zinc-900">{p.titulo}</p>
                     <p className="text-xs text-zinc-500">{p.subtitulo}</p>
                   </div>
-                  <time className="shrink-0 text-xs font-semibold text-indigo-700">
+                  <time className="shrink-0 text-xs font-semibold text-teal-700">
                     {format(p.data, "dd/MM", { locale: ptBR })}
                   </time>
                 </li>
@@ -285,8 +285,8 @@ export default async function PainelProfessorDashboardPage() {
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
-        <div className="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm lg:col-span-2">
-          <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-zinc-400">
+        <div className="painel-card p-4 sm:p-5 lg:col-span-2">
+          <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-zinc-500">
             Calendário do mês (resumo)
           </h2>
           <MonthCalendarView
@@ -297,9 +297,9 @@ export default async function PainelProfessorDashboardPage() {
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-400">Avisos</h2>
+          <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">Avisos</h2>
           {avisos.length === 0 ? (
-            <p className="rounded-2xl border border-zinc-100 bg-white p-5 text-sm text-zinc-500 shadow-sm">
+            <p className="painel-card p-5 text-sm text-zinc-600">
               Nenhum aviso no momento.
             </p>
           ) : (
@@ -325,7 +325,7 @@ export default async function PainelProfessorDashboardPage() {
       </section>
 
       <section>
-        <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-zinc-400">
+        <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-zinc-500">
           Acesso rápido
         </h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -335,7 +335,7 @@ export default async function PainelProfessorDashboardPage() {
               <Link
                 key={q.href}
                 href={q.href}
-                className={`group flex items-center gap-4 rounded-2xl border bg-gradient-to-br p-5 shadow-sm transition hover:shadow-md ${q.className}`}
+                className={`painel-interactive painel-focus-ring-prof group flex items-center gap-4 rounded-2xl border bg-gradient-to-br p-5 shadow-sm motion-safe:transition-[box-shadow,transform] motion-safe:duration-200 hover:shadow-md motion-safe:hover:-translate-y-px ${q.className}`}
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/90 shadow-sm ring-1 ring-black/5">
                   <Icon className="h-6 w-6" aria-hidden />

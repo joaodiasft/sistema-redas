@@ -28,7 +28,7 @@ type AulaApi = {
 };
 
 const inputClass =
-  "rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100";
+  "painel-interactive painel-focus-ring-prof min-h-[44px] rounded-xl border border-zinc-200 bg-white px-3 py-2 text-base outline-none sm:text-sm";
 
 export function ProfessorCalendarioClient({ turmas }: { turmas: TurmaRow[] }) {
   const router = useRouter();
@@ -95,7 +95,7 @@ export function ProfessorCalendarioClient({ turmas }: { turmas: TurmaRow[] }) {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-3">
         <label className="flex items-center gap-2 text-sm font-medium text-zinc-700">
-          <CalendarDays className="h-4 w-4 text-indigo-600" aria-hidden />
+          <CalendarDays className="h-4 w-4 text-teal-700" aria-hidden />
           Mês
           <input
             type="month"
@@ -113,10 +113,10 @@ export function ProfessorCalendarioClient({ turmas }: { turmas: TurmaRow[] }) {
           type="button"
           onClick={atualizarTudo}
           disabled={loading || isRefreshing}
-          className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm font-medium text-zinc-700 shadow-sm transition hover:border-indigo-200 hover:bg-indigo-50/50 disabled:opacity-50"
+          className="painel-interactive painel-focus-ring-prof inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm font-medium text-zinc-700 shadow-sm hover:border-teal-200 hover:bg-teal-50/50 disabled:pointer-events-none disabled:opacity-50"
         >
           <RefreshCw
-            className={`h-4 w-4 text-indigo-600 ${loading || isRefreshing ? "animate-spin" : ""}`}
+            className={`h-4 w-4 text-teal-700 ${loading || isRefreshing ? "animate-spin" : ""}`}
             aria-hidden
           />
           Atualizar
@@ -159,7 +159,7 @@ export function ProfessorCalendarioClient({ turmas }: { turmas: TurmaRow[] }) {
                     {a.turma.curso.nome} — {a.turma.nome} ({a.turma.codigo})
                   </p>
                   {a.modulo ? (
-                    <p className="text-xs text-indigo-700">
+                    <p className="text-xs text-teal-800">
                       {a.modulo.codigoPublico ?? `Módulo ${a.modulo.numero}`}
                       {a.modulo.titulo ? ` · ${a.modulo.titulo}` : ""}
                     </p>

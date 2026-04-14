@@ -201,13 +201,13 @@ export function ProfessorRelatoriosClient({ data }: { data: RelatorioProfessorPa
   }
 
   const card =
-    "flex flex-col gap-3 rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between";
+    "painel-card flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between";
 
   return (
     <div className="space-y-4">
       <div className={card}>
         <div className="flex items-start gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-teal-700 text-white shadow-md shadow-teal-900/15">
             <FileText className="h-5 w-5" aria-hidden />
           </div>
           <div>
@@ -218,7 +218,7 @@ export function ProfessorRelatoriosClient({ data }: { data: RelatorioProfessorPa
         <button
           type="button"
           onClick={exportGeral}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
+          className="painel-interactive painel-focus-ring-prof inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-full bg-teal-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-teal-900/10 hover:bg-teal-800"
         >
           <Download className="h-4 w-4" aria-hidden />
           PDF
@@ -233,7 +233,7 @@ export function ProfessorRelatoriosClient({ data }: { data: RelatorioProfessorPa
         <button
           type="button"
           onClick={exportPorTurma}
-          className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 px-5 py-2.5 text-sm font-semibold text-zinc-800 hover:bg-zinc-50"
+          className="painel-interactive painel-focus-ring-prof inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-zinc-200 px-5 py-2.5 text-sm font-semibold text-zinc-800 hover:bg-zinc-50"
         >
           <Download className="h-4 w-4" aria-hidden />
           PDF
@@ -248,7 +248,7 @@ export function ProfessorRelatoriosClient({ data }: { data: RelatorioProfessorPa
         <button
           type="button"
           onClick={exportAlunos}
-          className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 px-5 py-2.5 text-sm font-semibold text-zinc-800 hover:bg-zinc-50"
+          className="painel-interactive painel-focus-ring-prof inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-zinc-200 px-5 py-2.5 text-sm font-semibold text-zinc-800 hover:bg-zinc-50"
         >
           <Download className="h-4 w-4" aria-hidden />
           PDF
@@ -263,7 +263,7 @@ export function ProfessorRelatoriosClient({ data }: { data: RelatorioProfessorPa
         <button
           type="button"
           onClick={exportFrequencia}
-          className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 px-5 py-2.5 text-sm font-semibold text-zinc-800 hover:bg-zinc-50"
+          className="painel-interactive painel-focus-ring-prof inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-zinc-200 px-5 py-2.5 text-sm font-semibold text-zinc-800 hover:bg-zinc-50"
         >
           <Download className="h-4 w-4" aria-hidden />
           PDF
@@ -278,7 +278,7 @@ export function ProfessorRelatoriosClient({ data }: { data: RelatorioProfessorPa
         <button
           type="button"
           onClick={exportCalendario}
-          className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 px-5 py-2.5 text-sm font-semibold text-zinc-800 hover:bg-zinc-50"
+          className="painel-interactive painel-focus-ring-prof inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-zinc-200 px-5 py-2.5 text-sm font-semibold text-zinc-800 hover:bg-zinc-50"
         >
           <Download className="h-4 w-4" aria-hidden />
           PDF

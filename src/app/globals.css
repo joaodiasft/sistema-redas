@@ -2,18 +2,139 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  UI/UX Pro Max — tokens semânticos (superfície, texto, elevação).
+  Evita hex solto nos componentes; contraste alinhado a WCAG AA em texto corrido.
+*/
 :root {
   --erp-bg: #f7f5f8;
   --erp-ink: #111827;
   --admin-accent: #e11d48;
   --admin-surface: #ffffff;
   --admin-muted: #6b7280;
+  /* Painéis — cor primária funcional (não só decorativa) */
+  --painel-prof-accent: #0f766e;
+  --painel-prof-accent-hover: #0d9488;
+  --painel-prof-accent-soft: rgba(15, 118, 110, 0.1);
+  --painel-prof-on-accent: #f0fdfa;
+  --painel-aluno-accent: #be123c;
+  --painel-aluno-accent-hover: #9f1239;
+  --painel-aluno-accent-soft: rgba(190, 18, 60, 0.1);
+  --painel-aluno-on-accent: #fff1f2;
+  /* Superfície / borda / texto (Material-like) */
+  --painel-surface: #ffffff;
+  --painel-surface-muted: rgba(255, 255, 255, 0.92);
+  --painel-border: rgba(24, 24, 27, 0.08);
+  --painel-border-strong: rgba(24, 24, 27, 0.12);
+  --painel-on-surface: #18181b;
+  --painel-on-surface-variant: #52525b;
+  /* Elevação (sombra única coerente — evita “sombras aleatórias”) */
+  --painel-elevation-1: 0 1px 2px rgba(15, 23, 42, 0.06), 0 4px 14px -4px rgba(15, 23, 42, 0.1);
+  --painel-elevation-2: 0 4px 8px -2px rgba(15, 23, 42, 0.08), 0 12px 28px -8px rgba(15, 23, 42, 0.12);
 }
 
 body {
   color: var(--erp-ink);
   background: #f4f4f5;
-  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Fundos dos painéis: textura leve + gradiente (respeita prefers-reduced-motion) */
+.painel-prof-bg {
+  background-color: #f0fdfa;
+  background-image:
+    radial-gradient(ellipse 120% 80% at 100% 0%, rgba(13, 148, 136, 0.08), transparent 50%),
+    radial-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+  background-size: auto, 24px 24px;
+}
+
+.painel-aluno-bg {
+  background-color: #fff5f7;
+  background-image:
+    radial-gradient(ellipse 100% 70% at 0% 0%, rgba(190, 18, 60, 0.07), transparent 55%),
+    radial-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+  background-size: auto, 24px 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .painel-prof-bg,
+  .painel-aluno-bg {
+    background-image: none;
+  }
+}
+
+/* Barra inferior mobile: respiro para gestos / home indicator */
+.pb-nav-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+}
+
+@layer components {
+  /* Cartões — elevação consistente (skill: elevation-consistent) */
+  .painel-card {
+    border-radius: 1rem;
+    border: 1px solid var(--painel-border);
+    background: var(--painel-surface-muted);
+    box-shadow: var(--painel-elevation-1);
+  }
+
+  .painel-card-hero {
+    border-radius: 1.5rem;
+    border: 1px solid var(--painel-border-strong);
+    background: var(--painel-surface);
+    box-shadow: var(--painel-elevation-2);
+  }
+
+  /* Texto de apoio: comprimento legível (~65ch) */
+  .painel-prose-muted {
+    max-width: 65ch;
+    line-height: 1.625;
+    color: var(--painel-on-surface-variant);
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 640px) {
+    .painel-prose-muted {
+      font-size: 0.9375rem;
+    }
+  }
+
+  /* Foco visível — teclado (skill: focus-states) */
+  .painel-focus-ring-prof:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--painel-surface),
+      0 0 0 4px var(--painel-prof-accent);
+  }
+
+  .painel-focus-ring-aluno:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--painel-surface),
+      0 0 0 4px var(--painel-aluno-accent);
+  }
+
+  /* Micro-transição respeitosa (150–200ms; skill: duration-timing) */
+  .painel-interactive {
+    touch-action: manipulation;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .painel-interactive {
+      transition:
+        color 180ms ease-out,
+        background-color 180ms ease-out,
+        box-shadow 180ms ease-out,
+        transform 180ms ease-out;
+    }
+  }
 }
 
 /* Fundo do painel admin: grade de pontos (referência visual) */

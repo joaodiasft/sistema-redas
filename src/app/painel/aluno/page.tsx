@@ -110,16 +110,16 @@ export default async function PainelAlunoDashboardPage() {
 
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-3xl border border-rose-100/80 bg-gradient-to-br from-[#fff1f3] via-white to-white p-6 shadow-[0_20px_60px_-24px_rgba(190,18,60,0.35)] sm:p-8">
+      <section className="painel-card-hero relative overflow-hidden bg-gradient-to-br from-[#fff1f3] via-white to-white p-6 sm:p-8">
         <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-rose-200/30 blur-3xl" />
         <div className="relative">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-rose-600/90">
             Seu painel
           </p>
-          <h1 className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+          <h1 className="font-display mt-2 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
             Olá, {aluno.nomeCompleto.split(" ")[0]}!
           </h1>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-zinc-600">
+          <p className="painel-prose-muted mt-2">
             Acompanhe turmas, financeiro, frequência e avisos. Tudo aqui é só da sua
             matrícula — modo consulta.
           </p>
@@ -138,7 +138,7 @@ export default async function PainelAlunoDashboardPage() {
       </section>
 
       <section>
-        <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-zinc-400">
+        <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-zinc-500">
           Matrículas
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -150,7 +150,7 @@ export default async function PainelAlunoDashboardPage() {
             aluno.matriculas.map((m) => (
               <div
                 key={m.id}
-                className="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm"
+                className="painel-card p-5"
               >
                 <p className="text-xs font-semibold uppercase text-rose-600/80">
                   {m.curso.nome}
@@ -169,19 +169,19 @@ export default async function PainelAlunoDashboardPage() {
       </section>
 
       <section>
-        <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-zinc-400">
+        <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-zinc-500">
           Resumo rápido
         </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm">
+        <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="painel-card p-4 sm:p-5">
             <div className="flex items-center gap-2 text-zinc-500">
               <Wallet className="h-4 w-4" aria-hidden />
               <span className="text-xs font-semibold uppercase">Financeiro</span>
             </div>
-            <p className="mt-3 text-2xl font-bold text-zinc-900">
+            <p className="mt-3 text-2xl font-bold tabular-nums text-zinc-900">
               {parcelasPagas}/{parcelas.length || 0}
             </p>
-            <p className="text-xs text-zinc-500">Módulos pagos (total no cadastro)</p>
+            <p className="text-xs text-zinc-600">Módulos pagos (total no cadastro)</p>
             {parcelasPendentes > 0 ? (
               <p className="mt-2 text-xs font-medium text-amber-700">
                 {parcelasPendentes} pendente(s) ou atrasada(s)
@@ -191,15 +191,15 @@ export default async function PainelAlunoDashboardPage() {
             ) : null}
           </div>
 
-          <div className="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm">
+          <div className="painel-card p-4 sm:p-5">
             <div className="flex items-center gap-2 text-zinc-500">
               <TrendingUp className="h-4 w-4" aria-hidden />
               <span className="text-xs font-semibold uppercase">Frequência</span>
             </div>
-            <p className="mt-3 text-2xl font-bold text-zinc-900">
+            <p className="mt-3 text-2xl font-bold tabular-nums text-zinc-900">
               {pctFreq !== null ? `${pctFreq}%` : "—"}
             </p>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-zinc-600">
               {totalFreq > 0
                 ? `${presentes} presenças em ${totalFreq} registros`
                 : "Sem registros de presença ainda"}
@@ -211,34 +211,34 @@ export default async function PainelAlunoDashboardPage() {
             ) : null}
           </div>
 
-          <div className="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm">
+          <div className="painel-card p-4 sm:p-5">
             <div className="flex items-center gap-2 text-zinc-500">
               <PenLine className="h-4 w-4" aria-hidden />
               <span className="text-xs font-semibold uppercase">Redações</span>
             </div>
-            <p className="mt-3 text-2xl font-bold text-zinc-900">
+            <p className="mt-3 text-2xl font-bold tabular-nums text-zinc-900">
               {showRedacoes ? totalRedacoes : "—"}
             </p>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-zinc-600">
               {showRedacoes
                 ? `${entregasAgg._count.id} registro(s) de entrega`
                 : "Curso de redação não detectado na matrícula"}
             </p>
           </div>
 
-          <div className="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm">
+          <div className="painel-card p-4 sm:p-5">
             <div className="flex items-center gap-2 text-zinc-500">
               <Bell className="h-4 w-4" aria-hidden />
               <span className="text-xs font-semibold uppercase">Avisos</span>
             </div>
-            <p className="mt-3 text-2xl font-bold text-zinc-900">{avisos.length}</p>
-            <p className="text-xs text-zinc-500">Comunicados para você</p>
+            <p className="mt-3 text-2xl font-bold tabular-nums text-zinc-900">{avisos.length}</p>
+            <p className="text-xs text-zinc-600">Comunicados para você</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-zinc-400">
+        <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-zinc-500">
           Acesso rápido
         </h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -248,7 +248,7 @@ export default async function PainelAlunoDashboardPage() {
               <Link
                 key={q.href}
                 href={q.href}
-                className={`group flex items-center gap-4 rounded-2xl border bg-gradient-to-br p-5 shadow-sm transition hover:shadow-md ${q.color}`}
+                className={`painel-interactive painel-focus-ring-aluno group flex items-center gap-4 rounded-2xl border bg-gradient-to-br p-5 shadow-sm motion-safe:transition-[box-shadow,transform] motion-safe:duration-200 hover:shadow-md motion-safe:hover:-translate-y-px ${q.color}`}
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/80 shadow-sm ring-1 ring-black/5">
                   <Icon className="h-6 w-6" aria-hidden />
@@ -267,7 +267,7 @@ export default async function PainelAlunoDashboardPage() {
       {avisos.length > 0 ? (
         <section>
           <div className="mb-4 flex items-center justify-between gap-2">
-            <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-400">
+            <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
               Avisos recentes
             </h2>
             <Link
@@ -281,7 +281,7 @@ export default async function PainelAlunoDashboardPage() {
             {avisos.slice(0, 3).map((a) => (
               <li
                 key={a.id}
-                className="rounded-2xl border border-zinc-100 bg-white p-4 shadow-sm"
+                className="rounded-2xl border border-zinc-100/90 bg-white/95 p-4 shadow-sm"
               >
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="font-semibold text-zinc-900">{a.titulo}</p>
@@ -297,8 +297,8 @@ export default async function PainelAlunoDashboardPage() {
       ) : null}
 
       {parcelas.length > 0 ? (
-        <section className="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm sm:p-6">
-          <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-400">
+        <section className="painel-card p-5 sm:p-6">
+          <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
             Próximos módulos (financeiro)
           </h2>
           <div className="mt-4 overflow-x-auto">
