@@ -6,11 +6,19 @@ import { ptBR } from "date-fns/locale";
 import { CalendarDays, Loader2, Pencil, Plus, Trash2 } from "lucide-react";
 import { MonthCalendarView } from "@/components/dashboard/month-calendar-view";
 import { buildMarkersForMonth } from "@/lib/calendar-markers";
+import { resolverModuloParaData } from "@/lib/modulo-por-data";
 import type { Curso, Turma } from "@prisma/client";
 
 type TurmaRow = Turma & { curso: Curso };
 
-type ModuloRow = { id: string; codigoPublico: string | null; numero: number; titulo: string | null };
+type ModuloRow = {
+  id: string;
+  codigoPublico: string | null;
+  numero: number;
+  titulo: string | null;
+  mesReferencia: number | null;
+  anoReferencia: number | null;
+};
 type ProfRow = { id: string; nome: string; codigoPublico: string };
 
 type AulaApi = {
@@ -41,6 +49,8 @@ export function CalendarioAgendaClient({
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [novaData, setNovaData] = useState(() => format(new Date(), "yyyy-MM-dd'T'HH:mm"));
+  const [moduloIdNova, setModuloIdNova] = useState("");
 
   const refDate = useMemo(() => {
     const [y, m] = mes.split("-").map(Number);
@@ -69,6 +79,23 @@ export function CalendarioAgendaClient({
   useEffect(() => {
     void load();
   }, [load]);
+
+  useEffect(() => {
+    if (editingId) return;
+    const d = new Date(novaData);
+    if (Number.isNaN(d.getTime()) || modulos.length === 0) return;
+    const mod = resolverModuloParaData(
+      modulos.map((m) => ({
+        id: m.id,
+        numero: m.numero,
+        mesReferencia: m.mesReferencia,
+        anoReferencia: m.anoReferencia,
+        codigoPublico: m.codigoPublico,
+      })),
+      d,
+    );
+    setModuloIdNova(mod?.id ?? "");
+  }, [editingId, novaData, modulos]);
 
   const diasSemanaTurmas = turmas.map((t) => t.diaSemana);
   const aulasPont = aulas.map((a) => ({
@@ -112,8 +139,8 @@ export function CalendarioAgendaClient({
         setError(j.error ?? `Erro ${r.status}`);
         return;
       }
-      e.currentTarget.reset();
       setEditingId(null);
+      setNovaData(format(new Date(), "yyyy-MM-dd'T'HH:mm"));
       await load();
     } catch {
       setError("Erro de rede.");
@@ -130,14 +157,11 @@ export function CalendarioAgendaClient({
 
   function startEdit(a: AulaApi) {
     setEditingId(a.id);
+    setNovaData(format(parseISO(a.data), "yyyy-MM-dd'T'HH:mm"));
+    setModuloIdNova(a.modulo?.id ?? "");
     const form = document.getElementById("form-aula") as HTMLFormElement | null;
     if (!form) return;
-    (form.elements.namedItem("data") as HTMLInputElement).value = format(
-      parseISO(a.data),
-      "yyyy-MM-dd'T'HH:mm",
-    );
     (form.elements.namedItem("turmaId") as HTMLSelectElement).value = a.turma.id;
-    (form.elements.namedItem("moduloId") as HTMLSelectElement).value = a.modulo?.id ?? "";
     (form.elements.namedItem("professorId") as HTMLSelectElement).value = a.professor?.id ?? "";
     (form.elements.namedItem("titulo") as HTMLInputElement).value = a.titulo ?? "";
     (form.elements.namedItem("observacao") as HTMLTextAreaElement).value = a.observacao ?? "";
@@ -225,7 +249,7 @@ export function CalendarioAgendaClient({
           {editingId ? "Editar aula" : "Nova aula"}
         </h3>
         <p className="mt-1 text-xs text-zinc-500">
-          Curso e horário base vêm da turma; aqui você registra ocorrências e observações.
+          Curso e horário base vêm da turma; o módulo é sugerido pela data/hora (ajuste se precisar).
         </p>
         {error ? (
           <p className="mt-2 rounded-lg border border-red-200 bg-red-50 px-2 py-1 text-xs text-red-800">
@@ -235,7 +259,14 @@ export function CalendarioAgendaClient({
         <form id="form-aula" className="mt-4 space-y-3" onSubmit={(e) => void onCreate(e)}>
           <label className="block text-xs font-semibold text-zinc-600">
             Data e hora *
-            <input name="data" type="datetime-local" required className={`${inputClass} mt-1`} />
+            <input
+              name="data"
+              type="datetime-local"
+              required
+              className={`${inputClass} mt-1`}
+              value={novaData}
+              onChange={(e) => setNovaData(e.target.value)}
+            />
           </label>
           <label className="block text-xs font-semibold text-zinc-600">
             Turma *
@@ -252,7 +283,12 @@ export function CalendarioAgendaClient({
           </label>
           <label className="block text-xs font-semibold text-zinc-600">
             Módulo
-            <select name="moduloId" className={`${inputClass} mt-1`}>
+            <select
+              name="moduloId"
+              className={`${inputClass} mt-1`}
+              value={moduloIdNova}
+              onChange={(e) => setModuloIdNova(e.target.value)}
+            >
               <option value="">—</option>
               {modulos.map((m) => (
                 <option key={m.id} value={m.id}>
@@ -289,13 +325,19 @@ export function CalendarioAgendaClient({
             >
               {saving ? "Salvando…" : editingId ? "Atualizar" : "Lançar aula"}
             </button>
-            {editingId ? (
+                       {editingId ? (
               <button
                 type="button"
                 onClick={() => {
                   setEditingId(null);
+                  setNovaData(format(new Date(), "yyyy-MM-dd'T'HH:mm"));
                   const form = document.getElementById("form-aula") as HTMLFormElement | null;
-                  form?.reset();
+                  if (form) {
+                    (form.elements.namedItem("turmaId") as HTMLSelectElement).value = "";
+                    (form.elements.namedItem("professorId") as HTMLSelectElement).value = "";
+                    (form.elements.namedItem("titulo") as HTMLInputElement).value = "";
+                    (form.elements.namedItem("observacao") as HTMLTextAreaElement).value = "";
+                  }
                 }}
                 className="rounded-full border border-zinc-200 px-3 py-2 text-sm text-zinc-700"
               >

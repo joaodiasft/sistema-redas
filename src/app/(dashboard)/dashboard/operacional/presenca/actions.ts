@@ -2,10 +2,15 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { revalidatePainelProfessor } from "@/lib/revalidate-paineis";
+import { assertAdminMutation } from "@/lib/require-admin-mutation";
 
 export type PresencaState = { ok: boolean; error?: string };
 
 export async function salvarPresencas(_prev: PresencaState, formData: FormData): Promise<PresencaState> {
+  const denied = await assertAdminMutation();
+  if (denied) return { ok: false, error: denied };
+
   const encontroId = String(formData.get("encontroId") ?? "").trim();
   const dataAulaStr = String(formData.get("dataAula") ?? "").trim();
   if (!encontroId || !dataAulaStr) {
@@ -48,5 +53,6 @@ export async function salvarPresencas(_prev: PresencaState, formData: FormData):
   }
 
   revalidatePath("/dashboard/operacional/presenca");
+  revalidatePainelProfessor();
   return { ok: true };
 }

@@ -10,7 +10,10 @@ export default function CursosTurmasHubPage() {
       description="Acesse o cadastro completo de cursos e de turmas em páginas dedicadas."
     >
       <div className="grid gap-4 sm:grid-cols-2">
-        <Link href="/dashboard/cursos">
+        <Link
+          href="/dashboard/cursos"
+          className="block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-rose-500/50 focus-visible:ring-offset-2"
+        >
           <PanelCard className="h-full transition hover:border-[#e11d48]/25 hover:shadow-md">
             <div className="flex items-start gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-[#e11d48]">
@@ -23,7 +26,10 @@ export default function CursosTurmasHubPage() {
             </div>
           </PanelCard>
         </Link>
-        <Link href="/dashboard/turmas">
+        <Link
+          href="/dashboard/turmas"
+          className="block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:ring-offset-2"
+        >
           <PanelCard className="h-full transition hover:border-[#e11d48]/25 hover:shadow-md">
             <div className="flex items-start gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-700">

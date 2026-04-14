@@ -1,6 +1,8 @@
+import { revalidatePath } from "next/cache";
 import { requireAdminSession } from "@/lib/api-admin";
 import { optionalRelationId } from "@/lib/optional-fk";
 import { prisma } from "@/lib/prisma";
+import { revalidatePainelProfessor } from "@/lib/revalidate-paineis";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -50,6 +52,8 @@ export async function PATCH(req: Request, ctx: Ctx) {
         professor: true,
       },
     });
+    revalidatePath("/dashboard/operacional/calendario", "layout");
+    revalidatePainelProfessor();
     return Response.json({ aula });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
@@ -75,6 +79,8 @@ export async function DELETE(_req: Request, ctx: Ctx) {
 
   try {
     await prisma.aulaAgendada.delete({ where: { id } });
+    revalidatePath("/dashboard/operacional/calendario", "layout");
+    revalidatePainelProfessor();
     return Response.json({ ok: true });
   } catch {
     return Response.json({ error: "Aula não encontrada." }, { status: 404 });

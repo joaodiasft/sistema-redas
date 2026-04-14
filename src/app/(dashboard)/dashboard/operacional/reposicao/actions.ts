@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { assertAdminMutation } from "@/lib/require-admin-mutation";
 
 export type ReposicaoState = { ok: boolean; error?: string };
 
@@ -9,6 +10,9 @@ export async function registrarReposicao(
   _prev: ReposicaoState,
   formData: FormData,
 ): Promise<ReposicaoState> {
+  const denied = await assertAdminMutation();
+  if (denied) return { ok: false, error: denied };
+
   const alunoId = String(formData.get("alunoId") ?? "").trim();
   const dataStr = String(formData.get("dataReposicao") ?? "").trim();
   const descricaoFalta = String(formData.get("descricaoFalta") ?? "").trim();

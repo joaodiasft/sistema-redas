@@ -1,7 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import { registrarReposicao, type ReposicaoState } from "@/app/(dashboard)/dashboard/operacional/reposicao/actions";
+import type { ModuloParaResolver } from "@/lib/modulo-por-data";
+import { resolverModuloParaData, rotuloModuloCurto } from "@/lib/modulo-por-data";
 
 type AlunoOpt = { id: string; nomeCompleto: string; codigoPublico: string };
 
@@ -10,8 +12,27 @@ const initial: ReposicaoState = { ok: false };
 const inputClass =
   "w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm outline-none focus:border-[#e11d74]/40 focus:ring-2 focus:ring-[#e11d74]/15";
 
-export function ReposicaoFormClient({ alunos }: { alunos: AlunoOpt[] }) {
+export function ReposicaoFormClient({
+  alunos,
+  modulosResolver,
+}: {
+  alunos: AlunoOpt[];
+  modulosResolver: ModuloParaResolver[];
+}) {
   const [state, action, pending] = useActionState(registrarReposicao, initial);
+  const [dataReposicao, setDataReposicao] = useState(() => new Date().toISOString().slice(0, 10));
+  const [moduloRef, setModuloRef] = useState("");
+
+  const dataRef = useMemo(() => {
+    const d = new Date(dataReposicao + "T12:00:00");
+    return Number.isNaN(d.getTime()) ? new Date() : d;
+  }, [dataReposicao]);
+
+  useEffect(() => {
+    if (modulosResolver.length === 0) return;
+    const mod = resolverModuloParaData(modulosResolver, dataRef);
+    setModuloRef(mod ? rotuloModuloCurto(mod) : "");
+  }, [dataRef, modulosResolver]);
 
   return (
     <form action={action} className="space-y-4">
@@ -39,11 +60,24 @@ export function ReposicaoFormClient({ alunos }: { alunos: AlunoOpt[] }) {
       </label>
       <label className="block text-xs font-semibold text-zinc-600">
         Data da reposição *
-        <input name="dataReposicao" type="date" required className={`${inputClass} mt-1`} />
+        <input
+          name="dataReposicao"
+          type="date"
+          required
+          className={`${inputClass} mt-1`}
+          value={dataReposicao}
+          onChange={(e) => setDataReposicao(e.target.value)}
+        />
       </label>
       <label className="block text-xs font-semibold text-zinc-600">
-        Referência do módulo (texto livre)
-        <input name="moduloRef" className={`${inputClass} mt-1`} placeholder="Ex.: MD02" />
+        Referência do módulo (preenchido pela data; pode editar)
+        <input
+          name="moduloRef"
+          className={`${inputClass} mt-1`}
+          placeholder="Ex.: MD02"
+          value={moduloRef}
+          onChange={(e) => setModuloRef(e.target.value)}
+        />
       </label>
       <label className="block text-xs font-semibold text-zinc-600">
         Descrição da falta / observação

@@ -4,7 +4,7 @@ import { ReposicaoFormClient } from "@/components/admin/reposicao-form-client";
 import { prisma } from "@/lib/prisma";
 
 export default async function ReposicaoPage() {
-  const [alunos, ultimas] = await Promise.all([
+  const [alunos, ultimas, sem] = await Promise.all([
     prisma.aluno.findMany({
       orderBy: { nomeCompleto: "asc" },
       select: { id: true, nomeCompleto: true, codigoPublico: true },
@@ -17,7 +17,31 @@ export default async function ReposicaoPage() {
         aluno: { select: { nomeCompleto: true, codigoPublico: true } },
       },
     }),
+    prisma.semestre.findFirst({
+      where: { ativo: true },
+      include: {
+        modulos: {
+          orderBy: { numero: "asc" },
+          select: {
+            id: true,
+            numero: true,
+            mesReferencia: true,
+            anoReferencia: true,
+            codigoPublico: true,
+          },
+        },
+      },
+    }),
   ]);
+
+  const modulosResolver =
+    sem?.modulos.map((m) => ({
+      id: m.id,
+      numero: m.numero,
+      mesReferencia: m.mesReferencia,
+      anoReferencia: m.anoReferencia,
+      codigoPublico: m.codigoPublico,
+    })) ?? [];
 
   const faltasRecentes = await prisma.presencaEncontro.findMany({
     where: { presente: false },
@@ -32,11 +56,11 @@ export default async function ReposicaoPage() {
   return (
     <ModuleScaffold
       title="Reposição"
-      description="Registre reposições vinculadas ao aluno; use faltas recentes como referência."
+      description="Registre reposições vinculadas ao aluno; a referência de módulo é sugerida pela data. Use faltas recentes como apoio."
     >
       <div className="grid gap-6 lg:grid-cols-2">
         <PanelCard>
-          <ReposicaoFormClient alunos={alunos} />
+          <ReposicaoFormClient alunos={alunos} modulosResolver={modulosResolver} />
         </PanelCard>
         <div className="space-y-4">
           <PanelCard>

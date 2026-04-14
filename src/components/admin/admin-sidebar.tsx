@@ -10,6 +10,7 @@ import {
   GraduationCap,
   LayoutDashboard,
   Layers,
+  ListOrdered,
   PenLine,
   Settings,
   Users,
@@ -33,6 +34,7 @@ const grupos: { titulo: string; itens: Item[] }[] = [
     itens: [
       { href: "/dashboard/alunos", label: "Alunos", icon: Users },
       { href: "/dashboard/cursos-turmas", label: "Cursos & turmas", icon: Layers },
+      { href: "/dashboard/turmas", label: "Turmas", icon: ListOrdered },
       { href: "/dashboard/professores", label: "Professores", icon: GraduationCap },
       { href: "/dashboard/modulos", label: "Módulos", icon: PenLine },
     ],

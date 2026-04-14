@@ -33,13 +33,26 @@ export default async function PresencaPage() {
       })),
     ) ?? [];
 
+  const modulosResolver =
+    sem?.modulos.map((m) => ({
+      id: m.id,
+      numero: m.numero,
+      mesReferencia: m.mesReferencia,
+      anoReferencia: m.anoReferencia,
+      codigoPublico: m.codigoPublico,
+    })) ?? [];
+
   return (
     <ModuleScaffold
       title="Presença"
-      description="Integrado: turma carrega alunos matriculados; encontro e data salvam histórico em PresencaEncontro."
+      description="Integrado: turma carrega alunos matriculados; encontro e data salvam histórico em PresencaEncontro. O módulo do encontro é sugerido automaticamente pela data da aula."
     >
       <PanelCard>
-        <PresencaFormClient turmas={turmas} encontros={encontros} />
+        <PresencaFormClient
+          turmas={turmas}
+          encontros={encontros}
+          modulosResolver={modulosResolver}
+        />
       </PanelCard>
     </ModuleScaffold>
   );

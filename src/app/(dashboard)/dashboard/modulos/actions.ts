@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { revalidatePainelProfessor } from "@/lib/revalidate-paineis";
+import { assertAdminMutation } from "@/lib/require-admin-mutation";
 
 export type ModuloActionState = { ok: boolean; error?: string };
 
@@ -9,6 +11,9 @@ export async function criarModulo(
   _prev: ModuloActionState,
   formData: FormData,
 ): Promise<ModuloActionState> {
+  const denied = await assertAdminMutation();
+  if (denied) return { ok: false, error: denied };
+
   const semestreId = String(formData.get("semestreId") ?? "").trim();
   const numero = Number(formData.get("numero") ?? "");
   const titulo = String(formData.get("titulo") ?? "").trim() || null;
@@ -42,10 +47,14 @@ export async function criarModulo(
 
   revalidatePath("/dashboard/modulos");
   revalidatePath("/dashboard");
+  revalidatePainelProfessor();
   return { ok: true };
 }
 
 export async function excluirModuloAction(formData: FormData): Promise<void> {
+  const denied = await assertAdminMutation();
+  if (denied) return;
+
   const id = String(formData.get("id") ?? "");
   if (!id) return;
   try {
@@ -54,4 +63,5 @@ export async function excluirModuloAction(formData: FormData): Promise<void> {
     return;
   }
   revalidatePath("/dashboard/modulos");
+  revalidatePainelProfessor();
 }

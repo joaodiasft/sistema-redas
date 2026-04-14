@@ -1,6 +1,7 @@
 import { PrioridadeAviso } from "@prisma/client";
 import { requireAdminSession } from "@/lib/api-admin";
 import { prisma } from "@/lib/prisma";
+import { revalidatePainelAluno, revalidatePainelProfessor } from "@/lib/revalidate-paineis";
 
 export async function GET() {
   const auth = await requireAdminSession();
@@ -67,6 +68,9 @@ export async function POST(req: Request) {
       turma: { select: { id: true, nome: true, codigo: true } },
     },
   });
+
+  revalidatePainelProfessor();
+  revalidatePainelAluno();
 
   return Response.json({ aviso });
 }

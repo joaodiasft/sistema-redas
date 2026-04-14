@@ -1,6 +1,8 @@
+import { revalidatePath } from "next/cache";
 import { requireAdminSession } from "@/lib/api-admin";
 import { optionalRelationId } from "@/lib/optional-fk";
 import { prisma } from "@/lib/prisma";
+import { revalidatePainelProfessor } from "@/lib/revalidate-paineis";
 import { endOfMonth, startOfMonth } from "date-fns";
 
 export async function GET(req: Request) {
@@ -74,6 +76,8 @@ export async function POST(req: Request) {
         professor: true,
       },
     });
+    revalidatePath("/dashboard/operacional/calendario", "layout");
+    revalidatePainelProfessor();
     return Response.json({ aula });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);

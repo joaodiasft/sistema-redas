@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 import { PerfilUsuario } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { revalidatePainelProfessor } from "@/lib/revalidate-paineis";
+import { assertAdminMutation } from "@/lib/require-admin-mutation";
 
 export type ProfessorActionState = { ok: boolean; error?: string };
 
@@ -11,6 +13,9 @@ export async function criarProfessor(
   _prev: ProfessorActionState,
   formData: FormData,
 ): Promise<ProfessorActionState> {
+  const denied = await assertAdminMutation();
+  if (denied) return { ok: false, error: denied };
+
   const nome = String(formData.get("nome") ?? "").trim();
   const materia = String(formData.get("materia") ?? "").trim();
   const emailLogin = String(formData.get("emailLogin") ?? "").trim().toLowerCase();
@@ -74,6 +79,7 @@ export async function criarProfessor(
   }
 
   revalidatePath("/dashboard/professores");
+  revalidatePainelProfessor();
   return { ok: true };
 }
 
@@ -81,6 +87,9 @@ export async function atualizarProfessor(
   _prev: ProfessorActionState,
   formData: FormData,
 ): Promise<ProfessorActionState> {
+  const denied = await assertAdminMutation();
+  if (denied) return { ok: false, error: denied };
+
   const id = String(formData.get("id") ?? "").trim();
   const nome = String(formData.get("nome") ?? "").trim();
   const materia = String(formData.get("materia") ?? "").trim();
@@ -109,6 +118,7 @@ export async function atualizarProfessor(
   }
 
   revalidatePath("/dashboard/professores");
+  revalidatePainelProfessor();
   return { ok: true };
 }
 
@@ -116,6 +126,9 @@ export async function excluirProfessor(
   _prev: ProfessorActionState,
   formData: FormData,
 ): Promise<ProfessorActionState> {
+  const denied = await assertAdminMutation();
+  if (denied) return { ok: false, error: denied };
+
   const id = String(formData.get("id") ?? "").trim();
   if (!id) return { ok: false, error: "ID inválido." };
 
@@ -135,5 +148,6 @@ export async function excluirProfessor(
   }
 
   revalidatePath("/dashboard/professores");
+  revalidatePainelProfessor();
   return { ok: true };
 }

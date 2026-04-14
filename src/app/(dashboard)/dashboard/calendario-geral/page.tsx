@@ -21,7 +21,7 @@ export default async function CalendarioGeralPage() {
   return (
     <ModuleScaffold
       title="Calendário geral"
-      description="Agenda profissional: grade recorrente das turmas + lançamento de aulas com módulo, professor e observação."
+      description="Agenda profissional: grade recorrente das turmas + lançamento de aulas com módulo (sugerido pela data), professor e observação."
     >
       <CalendarioAgendaClient turmas={turmas} modulos={modulos} professores={professores} />
     </ModuleScaffold>

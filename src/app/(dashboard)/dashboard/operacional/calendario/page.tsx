@@ -11,7 +11,19 @@ export default async function CalendarioOperacionalPage() {
     }),
     prisma.semestre.findFirst({
       where: { ativo: true },
-      include: { modulos: { orderBy: { numero: "asc" } } },
+      include: {
+        modulos: {
+          orderBy: { numero: "asc" },
+          select: {
+            id: true,
+            codigoPublico: true,
+            numero: true,
+            titulo: true,
+            mesReferencia: true,
+            anoReferencia: true,
+          },
+        },
+      },
     }),
     prisma.professor.findMany({ orderBy: { nome: "asc" } }),
   ]);
@@ -21,7 +33,7 @@ export default async function CalendarioOperacionalPage() {
   return (
     <ModuleScaffold
       title="Calendário operacional"
-      description="Mesmo motor do calendário geral: lançar, editar e excluir aulas com observações."
+      description="Mesmo motor do calendário geral: lançar, editar e excluir aulas com observações. O módulo é preenchido automaticamente conforme a data/hora da aula."
     >
       <CalendarioAgendaClient turmas={turmas} modulos={modulos} professores={professores} />
     </ModuleScaffold>

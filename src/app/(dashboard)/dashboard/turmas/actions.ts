@@ -3,6 +3,8 @@
 import { ClasseTurma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { revalidatePainelProfessor } from "@/lib/revalidate-paineis";
+import { assertAdminMutation } from "@/lib/require-admin-mutation";
 
 export type TurmaActionState = { ok: boolean; error?: string };
 
@@ -10,6 +12,9 @@ export async function criarTurma(
   _prev: TurmaActionState,
   formData: FormData,
 ): Promise<TurmaActionState> {
+  const denied = await assertAdminMutation();
+  if (denied) return { ok: false, error: denied };
+
   const cursoId = String(formData.get("cursoId") ?? "").trim();
   const codigo = String(formData.get("codigo") ?? "").trim();
   const nome = String(formData.get("nome") ?? "").trim();
@@ -47,6 +52,7 @@ export async function criarTurma(
   revalidatePath("/dashboard/turmas");
   revalidatePath("/dashboard/cursos-turmas");
   revalidatePath("/dashboard");
+  revalidatePainelProfessor();
   return { ok: true };
 }
 
@@ -54,6 +60,9 @@ export async function atualizarTurma(
   _prev: TurmaActionState,
   formData: FormData,
 ): Promise<TurmaActionState> {
+  const denied = await assertAdminMutation();
+  if (denied) return { ok: false, error: denied };
+
   const id = String(formData.get("id") ?? "").trim();
   const cursoId = String(formData.get("cursoId") ?? "").trim();
   const codigo = String(formData.get("codigo") ?? "").trim();
@@ -95,10 +104,14 @@ export async function atualizarTurma(
   revalidatePath("/dashboard/turmas");
   revalidatePath("/dashboard/cursos-turmas");
   revalidatePath("/dashboard");
+  revalidatePainelProfessor();
   return { ok: true };
 }
 
 export async function excluirTurmaAction(formData: FormData): Promise<void> {
+  const denied = await assertAdminMutation();
+  if (denied) return;
+
   const id = String(formData.get("id") ?? "");
   if (!id) return;
   try {
@@ -109,4 +122,5 @@ export async function excluirTurmaAction(formData: FormData): Promise<void> {
   revalidatePath("/dashboard/turmas");
   revalidatePath("/dashboard/cursos-turmas");
   revalidatePath("/dashboard");
+  revalidatePainelProfessor();
 }

@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifySessionToken } from "@/lib/auth";
 
-const STAFF_PERFIS = new Set(["ADMIN", "COORDENADOR", "RECEPCAO"]);
+/** Apenas ADMIN acede ao ERP em `/dashboard`. Professores e alunos usam `/painel/*`. */
+const PAINEL_ADMIN = "ADMIN" as const;
 
 /** Serve a landing estática em `/` (public/index.html) sem conflitar com o App Router. */
 export async function middleware(request: NextRequest) {
@@ -25,7 +26,7 @@ export async function middleware(request: NextRequest) {
     if (session.perfil === "PROFESSOR") {
       return NextResponse.redirect(new URL("/painel/professor", request.url));
     }
-    if (!STAFF_PERFIS.has(session.perfil)) {
+    if (session.perfil !== PAINEL_ADMIN) {
       const res = NextResponse.redirect(new URL("/login", request.url));
       res.cookies.set("session", "", { path: "/", maxAge: 0 });
       return res;
@@ -38,7 +39,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
     if (session.perfil !== "ALUNO") {
-      if (STAFF_PERFIS.has(session.perfil)) {
+      if (session.perfil === PAINEL_ADMIN) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
       }
       if (session.perfil === "PROFESSOR") {
@@ -56,7 +57,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
     if (session.perfil !== "PROFESSOR") {
-      if (STAFF_PERFIS.has(session.perfil)) {
+      if (session.perfil === PAINEL_ADMIN) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
       }
       if (session.perfil === "ALUNO") {

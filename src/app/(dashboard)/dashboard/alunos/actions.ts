@@ -9,6 +9,8 @@ import {
   TipoPlano,
 } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { assertAdminMutation } from "@/lib/require-admin-mutation";
+import { revalidatePainelAluno, revalidatePainelProfessor } from "@/lib/revalidate-paineis";
 
 export type CriarAlunoState = { ok: boolean; error?: string };
 
@@ -16,6 +18,9 @@ export async function criarAluno(
   _prev: CriarAlunoState,
   formData: FormData,
 ): Promise<CriarAlunoState> {
+  const denied = await assertAdminMutation();
+  if (denied) return { ok: false, error: denied };
+
   const nomeCompleto = String(formData.get("nomeCompleto") ?? "").trim();
   const emailLogin = String(formData.get("emailLogin") ?? "")
     .trim()
@@ -138,5 +143,7 @@ export async function criarAluno(
   }
 
   revalidatePath("/dashboard/alunos");
+  revalidatePainelProfessor();
+  revalidatePainelAluno();
   redirect("/dashboard/alunos");
 }
