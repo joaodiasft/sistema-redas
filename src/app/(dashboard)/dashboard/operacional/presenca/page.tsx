@@ -1,30 +1,45 @@
 import { ModuleScaffold } from "@/components/admin/module-scaffold";
 import { PanelCard } from "@/components/admin/panel-card";
+import { PresencaFormClient } from "@/components/admin/presenca-form-client";
+import { prisma } from "@/lib/prisma";
 
-export default function PresencaPage() {
+export default async function PresencaPage() {
+  const [turmas, sem] = await Promise.all([
+    prisma.turma.findMany({
+      where: { ativa: true },
+      include: { curso: true },
+      orderBy: [{ cursoId: "asc" }, { nome: "asc" }],
+    }),
+    prisma.semestre.findFirst({
+      where: { ativo: true },
+      include: {
+        modulos: {
+          orderBy: { numero: "asc" },
+          include: { encontros: { orderBy: { ordem: "asc" } } },
+        },
+      },
+    }),
+  ]);
+
+  const encontros =
+    sem?.modulos.flatMap((m) =>
+      m.encontros.map((e) => ({
+        id: e.id,
+        rotulo: e.rotulo,
+        ordem: e.ordem,
+        moduloNumero: m.numero,
+        moduloTitulo: m.titulo,
+        codigoModulo: m.codigoPublico,
+      })),
+    ) ?? [];
+
   return (
     <ModuleScaffold
       title="Presença"
-      description="Selecione curso, turma e módulo; liste os alunos da turma e marque presença individual por encontro."
+      description="Integrado: turma carrega alunos matriculados; encontro e data salvam histórico em PresencaEncontro."
     >
-      <div className="grid gap-4 md:grid-cols-3">
-        {["Curso", "Turma", "Módulo / encontro"].map((label) => (
-          <PanelCard key={label}>
-            <label className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
-              {label}
-            </label>
-            <select className="mt-2 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm">
-              <option>Selecione…</option>
-            </select>
-          </PanelCard>
-        ))}
-      </div>
-      <PanelCard className="mt-6">
-        <p className="text-sm text-zinc-600">
-          Após escolher turma e encontro, a lista de alunos matriculados aparecerá aqui com toggles
-          de presença (integração com <code className="rounded bg-zinc-100 px-1">PresencaEncontro</code>
-          ).
-        </p>
+      <PanelCard>
+        <PresencaFormClient turmas={turmas} encontros={encontros} />
       </PanelCard>
     </ModuleScaffold>
   );

@@ -1,19 +1,29 @@
+import { CalendarioAgendaClient } from "@/components/dashboard/calendario-agenda-client";
 import { ModuleScaffold } from "@/components/admin/module-scaffold";
-import { PanelCard } from "@/components/admin/panel-card";
+import { prisma } from "@/lib/prisma";
 
-export default function CalendarioOperacionalPage() {
+export default async function CalendarioOperacionalPage() {
+  const [turmas, semestre, professores] = await Promise.all([
+    prisma.turma.findMany({
+      where: { ativa: true },
+      include: { curso: true },
+      orderBy: [{ cursoId: "asc" }, { codigo: "asc" }],
+    }),
+    prisma.semestre.findFirst({
+      where: { ativo: true },
+      include: { modulos: { orderBy: { numero: "asc" } } },
+    }),
+    prisma.professor.findMany({ orderBy: { nome: "asc" } }),
+  ]);
+
+  const modulos = semestre?.modulos ?? [];
+
   return (
     <ModuleScaffold
       title="Calendário operacional"
-      description="Panorama de aulas, módulos e turmas — complementa o calendário geral com foco em registro operacional."
+      description="Mesmo motor do calendário geral: lançar, editar e excluir aulas com observações."
     >
-      <PanelCard>
-        <p className="text-sm text-zinc-600">
-          Visualização combinando datas de encontros (<code className="rounded bg-zinc-100 px-1">Encontro</code>
-          ), turmas e andamento mensal. Pode ser unificado ao calendário geral com camadas
-          adicionais.
-        </p>
-      </PanelCard>
+      <CalendarioAgendaClient turmas={turmas} modulos={modulos} professores={professores} />
     </ModuleScaffold>
   );
 }

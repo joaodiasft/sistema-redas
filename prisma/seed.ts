@@ -514,7 +514,11 @@ async function main() {
         titulo: "Dados iniciais carregados",
         mensagem:
           "Cursos 01 (Redação) e 02 (Exatas), turmas R1–R6 e EX1, professores Prof001–004 e aluno João Claudio (R0002) estão no banco após o seed.",
-        prioridade: 1,
+        prioridade: 10,
+        prioridadeNivel: "ALTA",
+        paraTodasTurmas: true,
+        enviarAlunos: true,
+        enviarProfessores: true,
         ativo: true,
       },
     ],

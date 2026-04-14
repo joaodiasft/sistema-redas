@@ -44,6 +44,12 @@ enum StatusParcela {
   ISENTO
 }
 
+enum PrioridadeAviso {
+  BAIXA
+  MEDIA
+  ALTA
+}
+
 /// Contador para códigos R0001, Prof001, MD01
 model SequenciaCodigo {
   entidade String @id
@@ -65,6 +71,7 @@ model Curso {
   criadoEm  DateTime @default(now())
   turmas    Turma[]
   matriculas Matricula[]
+  avisos    AvisoSistema[]
 }
 
 model Turma {
@@ -83,6 +90,8 @@ model Turma {
   criadoEm    DateTime @default(now())
   matriculas  Matricula[]
   professores ProfessorTurma[]
+  avisos      AvisoSistema[]
+  aulasAgendadas AulaAgendada[]
 
   @@unique([cursoId, codigo])
 }
@@ -110,6 +119,7 @@ model Professor {
   usuario        Usuario? @relation(fields: [usuarioId], references: [id])
   criadoEm       DateTime @default(now())
   turmas         ProfessorTurma[]
+  aulasAgendadas AulaAgendada[]
 }
 
 model ProfessorTurma {
@@ -186,6 +196,7 @@ model ModuloCurso {
   mesReferencia  Int?
   anoReferencia  Int?
   encontros      Encontro[]
+  aulasAgendadas AulaAgendada[]
 }
 
 model Encontro {
@@ -267,7 +278,36 @@ model AvisoSistema {
   id        String   @id @default(cuid())
   titulo    String
   mensagem  String
+  /// Ordenação interna (maior = destaque)
   prioridade Int     @default(0)
+  prioridadeNivel PrioridadeAviso @default(MEDIA)
   ativo     Boolean  @default(true)
   criadoEm  DateTime @default(now())
+
+  paraTodasTurmas Boolean @default(true)
+  enviarAlunos    Boolean @default(true)
+  enviarProfessores Boolean @default(false)
+
+  cursoId String?
+  curso   Curso?  @relation(fields: [cursoId], references: [id], onDelete: SetNull)
+  turmaId String?
+  turma   Turma?  @relation(fields: [turmaId], references: [id], onDelete: SetNull)
+}
+
+/// Aulas e eventos pontuais no calendário (complementa a grade recorrente da turma)
+model AulaAgendada {
+  id        String   @id @default(cuid())
+  data      DateTime
+  titulo    String?
+  observacao String?
+
+  turmaId     String
+  turma       Turma     @relation(fields: [turmaId], references: [id], onDelete: Cascade)
+  moduloId    String?
+  modulo      ModuloCurso? @relation(fields: [moduloId], references: [id], onDelete: SetNull)
+  professorId String?
+  professor   Professor? @relation(fields: [professorId], references: [id], onDelete: SetNull)
+
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
 }

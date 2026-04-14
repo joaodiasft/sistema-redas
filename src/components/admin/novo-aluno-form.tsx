@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { criarAluno, type CriarAlunoState } from "@/app/(dashboard)/dashboard/alunos/actions";
 
 type TurmaRow = {
@@ -15,11 +15,36 @@ const initial: CriarAlunoState = { ok: false };
 const inputClass =
   "w-full rounded-xl border border-zinc-200 bg-zinc-50/80 px-3 py-2 text-sm outline-none transition focus:border-[#e11d74]/50 focus:bg-white focus:ring-2 focus:ring-[#e11d74]/15";
 
+const tabs = [
+  { id: "dados" as const, label: "Dados pessoais" },
+  { id: "matricula" as const, label: "Cursos e turmas" },
+  { id: "financeiro" as const, label: "Financeiro" },
+  { id: "acessos" as const, label: "Acessos externos" },
+];
+
 export function NovoAlunoForm({ turmas }: { turmas: TurmaRow[] }) {
   const [state, action, pending] = useActionState(criarAluno, initial);
+  const [tab, setTab] = useState<(typeof tabs)[number]["id"]>("dados");
 
   return (
     <form action={action} className="space-y-8">
+      <nav className="flex flex-wrap gap-2 border-b border-zinc-200 pb-3" aria-label="Etapas do cadastro">
+        {tabs.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            onClick={() => setTab(t.id)}
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
+              tab === t.id
+                ? "bg-[#e11d74] text-white shadow-sm"
+                : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </nav>
+
       {state.error ? (
         <p
           className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
@@ -29,7 +54,7 @@ export function NovoAlunoForm({ turmas }: { turmas: TurmaRow[] }) {
         </p>
       ) : null}
 
-      <section>
+      <section className={tab === "dados" ? "space-y-4" : "hidden"} aria-hidden={tab !== "dados"}>
         <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
           Identificação
         </h2>
@@ -80,7 +105,7 @@ export function NovoAlunoForm({ turmas }: { turmas: TurmaRow[] }) {
         </div>
       </section>
 
-      <section>
+      <section className={tab === "matricula" ? "space-y-4" : "hidden"} aria-hidden={tab !== "matricula"}>
         <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
           Matrícula (até 2 turmas)
         </h2>
@@ -111,7 +136,7 @@ export function NovoAlunoForm({ turmas }: { turmas: TurmaRow[] }) {
         </div>
       </section>
 
-      <section>
+      <section className={tab === "financeiro" ? "space-y-4" : "hidden"} aria-hidden={tab !== "financeiro"}>
         <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
           Plano financeiro
         </h2>
@@ -143,7 +168,7 @@ export function NovoAlunoForm({ turmas }: { turmas: TurmaRow[] }) {
         </p>
       </section>
 
-      <section>
+      <section className={tab === "acessos" ? "space-y-4" : "hidden"} aria-hidden={tab !== "acessos"}>
         <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
           Acessos externos
         </h2>
@@ -169,12 +194,30 @@ export function NovoAlunoForm({ turmas }: { turmas: TurmaRow[] }) {
         </div>
       </section>
 
-      <section className="rounded-xl border border-dashed border-zinc-200 bg-zinc-50/80 p-4 text-sm text-zinc-600">
+      <section
+        className={`rounded-xl border border-dashed border-zinc-200 bg-zinc-50/80 p-4 text-sm text-zinc-600 ${tab === "acessos" ? "" : "hidden"}`}
+        aria-hidden={tab !== "acessos"}
+      >
         <strong className="text-zinc-800">Senha da plataforma:</strong> o primeiro acesso usará a
         senha padrão configurada em Configurações (atualmente equivalente a{" "}
         <code className="rounded bg-white px-1">123456</code>). O aluno poderá alterar depois do
         login.
       </section>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-zinc-100 pt-6">
+        <div className="flex flex-wrap gap-2">
+          {tabs.map((t) => (
+            <button
+              key={`foot-${t.id}`}
+              type="button"
+              onClick={() => setTab(t.id)}
+              className="text-xs font-medium text-zinc-500 underline-offset-2 hover:text-zinc-800 hover:underline"
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="flex flex-wrap gap-3">
         <button

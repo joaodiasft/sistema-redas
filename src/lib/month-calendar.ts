@@ -10,12 +10,15 @@ import {
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
+export type DiaMarker = { cor: string; label: string };
+
 export type DiaCalendario = {
   date: Date;
   label: string;
   diaSemana: number;
   temAulaPrevista: boolean;
   foraMes: boolean;
+  markers: DiaMarker[];
 };
 
 const weekOpts = { weekStartsOn: 1 as const };
@@ -23,6 +26,7 @@ const weekOpts = { weekStartsOn: 1 as const };
 export function buildMonthGrid(
   ref: Date,
   diasComAula: Set<string>,
+  markersByDay?: Map<string, DiaMarker[]>,
 ): { cells: DiaCalendario[]; title: string } {
   const monthStart = startOfMonth(ref);
   const monthEnd = endOfMonth(ref);
@@ -36,12 +40,15 @@ export function buildMonthGrid(
   for (const d of eachDayOfInterval({ start: gridStart, end: gridEnd })) {
     const key = format(d, "yyyy-MM-dd");
     const noMes = isWithinInterval(d, { start: monthStart, end: monthEnd });
+    const markers = markersByDay?.get(key) ?? [];
+    const temGrade = diasComAula.has(key);
     cells.push({
       date: d,
       label: format(d, "d"),
       diaSemana: getDay(d),
-      temAulaPrevista: diasComAula.has(key),
+      temAulaPrevista: temGrade || markers.length > 0,
       foraMes: !noMes,
+      markers,
     });
   }
 
